@@ -1,10 +1,10 @@
 :root {
-  --color-background: #EEF2FF;
+  --color-background: #F3F4FD;
   --color-primary: #1e1b4b;
   --color-accent: #f59e0b;
   
   --color-text-main: #1f2937; /* Gray 800 */
-  --color-text-secondary: #4b5563; /* Gray 600 */
+  --color-text-secondary: #6b7280; /* Gray 500 */
   --color-text-muted: #9ca3af; /* Gray 400 */
   
   --color-border: #e5e7eb; /* Gray 200 */

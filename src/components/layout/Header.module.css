@@ -18,17 +18,43 @@
   flex: 1;
 }
 
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--color-text-main);
   margin: 0;
 }
 
+.infoIcon {
+  color: var(--color-text-main);
+  fill: black; /* Simulating the filled icon style */
+  color: white; /* The icon inside is white, fill is black */
+  background: black;
+  border-radius: 50%;
+  padding: 2px;
+  width: 20px;
+  height: 20px;
+}
+
 .subtitle {
   font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-main);
   margin: 0.25rem 0 0 0;
+  text-align: center;
+  max-width: 800px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitleLabel {
+  font-weight: 700;
 }
 
 .navButton {
@@ -37,12 +63,13 @@
   border: none;
   padding: 0.5rem 1.5rem;
   border-radius: 9999px; /* Pill shape */
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: opacity 0.2s;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .navButton:hover {

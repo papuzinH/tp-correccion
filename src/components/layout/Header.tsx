@@ -1,5 +1,6 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
 import styles from './Header.module.css';
 
@@ -9,7 +10,14 @@ export const Header: React.FC = () => {
     students, 
     nextStudent, 
     prevStudent 
-  } = useAppStore();
+  } = useAppStore(
+    useShallow((state) => ({
+      currentStudentIndex: state.currentStudentIndex,
+      students: state.students,
+      nextStudent: state.nextStudent,
+      prevStudent: state.prevStudent,
+    }))
+  );
 
   const currentStudent = students[currentStudentIndex];
   const hasPrev = currentStudentIndex > 0;
@@ -27,9 +35,12 @@ export const Header: React.FC = () => {
       </button>
 
       <div className={styles.headerContent}>
-        <h1 className={styles.title}>Principios de la Composición Visual</h1>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>Principios de la Composición Visual - TP Evaluativo</h1>
+          <Info size={20} className={styles.infoIcon} />
+        </div>
         <p className={styles.subtitle}>
-          {currentStudent ? `${currentStudent.name} (${currentStudentIndex + 1}/${students.length})` : 'Sin alumnos cargados'}
+          <span className={styles.subtitleLabel}>Entrega grupal:</span> {currentStudent ? `${currentStudent.name}, Pepito Lopez, Alejo Perez, Armando Augusto, María López, Belén Escobar` : 'Sin alumnos'}
         </p>
       </div>
 

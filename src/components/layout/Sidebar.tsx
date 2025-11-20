@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Menu, User, Users, Clock } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = memo(() => {
   return (
     <nav className={styles.sidebar}>
       <div className={styles.navItem}>
@@ -22,4 +22,6 @@ export const Sidebar: React.FC = () => {
       </div>
     </nav>
   );
-};
+});
+
+Sidebar.displayName = 'Sidebar';
