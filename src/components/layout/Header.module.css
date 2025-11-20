@@ -1,0 +1,55 @@
+.header {
+  height: 80px;
+  background-color: var(--color-white);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0.25rem 0 0 0;
+}
+
+.navButton {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px; /* Pill shape */
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navButton:hover {
+  opacity: 0.9;
+}
+
+.navButton:disabled {
+  background-color: var(--color-text-muted);
+  cursor: not-allowed;
+}

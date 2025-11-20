@@ -1,0 +1,20 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.mainWrapper {
+  flex: 1;
+  margin-left: 64px; /* Sidebar width */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
