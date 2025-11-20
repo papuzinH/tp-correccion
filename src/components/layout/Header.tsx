@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
 import { Button } from '../ui/Button';
+import { mockState } from '../../data/mockData';
 import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
@@ -20,9 +21,15 @@ export const Header: React.FC = () => {
     }))
   );
 
-  const currentStudent = students[currentStudentIndex];
   const hasPrev = currentStudentIndex > 0;
   const hasNext = currentStudentIndex < students.length - 1;
+
+  // Get group members names from mock data
+  const groupMembers = mockState.entrega.integrantes
+    .map(id => mockState.usuarios.find(u => u.idUsuario === id))
+    .filter(Boolean)
+    .map(u => `${u?.nombre} ${u?.apellido}`)
+    .join(', ');
 
   return (
     <header className={styles.header}>
@@ -36,11 +43,13 @@ export const Header: React.FC = () => {
 
       <div className={styles.headerContent}>
         <div className={styles.titleContainer}>
-          <h1 className={styles.title}>Principios de la Composición Visual - TP Evaluativo</h1>
+          <h1 className={styles.title}>{mockState.tpConfiguracion.alias}</h1>
           <Info size={20} className={styles.infoIcon} />
         </div>
         <p className={styles.subtitle}>
-          <span className={styles.subtitleLabel}>Entrega grupal:</span> {currentStudent ? `${currentStudent.name}, Pepito Lopez, Alejo Perez, Armando Augusto, María López, Belén Escobar` : 'Sin alumnos'}
+          <span className={styles.subtitleLabel}>
+            Entrega {mockState.tpConfiguracion.esGrupal ? 'grupal' : 'individual'}:
+          </span> {groupMembers || 'Sin alumnos'}
         </p>
       </div>
 

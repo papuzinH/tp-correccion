@@ -1,7 +1,9 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Calendar, FileText } from 'lucide-react';
 import { Student } from '../../../types/types';
 import { Button } from '../../../components/ui/Button';
+import { mockState } from '../../../data/mockData';
+import { VersionEntrega } from '../../../types';
 import styles from './StudentSubmission.module.css';
 
 interface StudentSubmissionProps {
@@ -9,41 +11,79 @@ interface StudentSubmissionProps {
 }
 
 export const StudentSubmission = memo(({ student }: StudentSubmissionProps) => {
-  // Mock submission data for now
-  const submissionDate = "30/10/2024 18:13hs";
+  // student prop is kept for interface compatibility but data comes from mockState as requested
+  const [showHistory, setShowHistory] = useState(false);
+
+  // Sort versions by date descending (newest first)
+  const sortedVersions = [...mockState.entrega.versiones].sort((a, b) => 
+    new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+  );
+
+  const versionsToShow = showHistory ? sortedVersions : [sortedVersions[0]];
+  const previousVersionsCount = sortedVersions.length - 1;
+
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}hs`;
+  };
+
+  const getUserName = (userId: number) => {
+    const user = mockState.usuarios.find(u => u.idUsuario === userId);
+    return user ? `${user.nombre} ${user.apellido}` : 'Usuario desconocido';
+  };
 
   return (
     <div className={styles.container}>
-      <a href="#" className={styles.historyLink}>
-        Ver entregas anteriores (1)
-      </a>
+      {previousVersionsCount > 0 && (
+        <a 
+          href="#" 
+          className={styles.historyLink}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowHistory(!showHistory);
+          }}
+        >
+          {showHistory ? 'Ocultar entregas anteriores' : `Ver entregas anteriores (${previousVersionsCount})`}
+        </a>
+      )}
 
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div className={styles.userInfo}>
-            <span className={styles.userName}>{student.name} realizó una entrega grupal</span>
-          </div>
-          
-          <div className={styles.dateInfo}>
-            <Calendar size={18} className={styles.calendarIcon} />
-            <span>{submissionDate}</span>
-          </div>
-        </div>
+      <div className={styles.versionsList}>
+        {versionsToShow.map((version: VersionEntrega) => (
+          <div key={version.idVersionEntregaTP} className={styles.card} style={{ marginBottom: '1rem' }}>
+            <div className={styles.cardHeader}>
+              <div className={styles.userInfo}>
+                <span className={styles.userName}>
+                  {getUserName(version.idUsuario)} realizó una entrega {mockState.tpConfiguracion.esGrupal ? 'grupal' : 'individual'}
+                </span>
+              </div>
+              
+              <div className={styles.dateInfo}>
+                <Calendar size={18} className={styles.calendarIcon} />
+                <span>{formatDate(version.fecha)}</span>
+              </div>
+            </div>
 
-        <div className={styles.cardBody}>
-          <p>
-            Profe, te envío el PDF correcto
-          </p>
-          
-          <div className={styles.attachmentContainer}>
-            <Button 
-              className={styles.attachmentChip}
-              icon={<FileText size={16} />}
-            >
-              entregavfinal.pdf
-            </Button>
+            <div className={styles.cardBody}>
+              {version.texto && (
+                <p>{version.texto}</p>
+              )}
+              
+              {version.adjuntos.length > 0 && (
+                <div className={styles.attachmentContainer}>
+                  {version.adjuntos.map((adjunto, index) => (
+                    <Button 
+                      key={index}
+                      className={styles.attachmentChip}
+                      icon={<FileText size={16} />}
+                    >
+                      {adjunto}
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
