@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Calendar, FileText } from 'lucide-react';
 import { Student } from '../../../types/types';
+import { Button } from '../../../components/ui/Button';
 import styles from './StudentSubmission.module.css';
 
 interface StudentSubmissionProps {
@@ -35,10 +36,12 @@ export const StudentSubmission = memo(({ student }: StudentSubmissionProps) => {
           </p>
           
           <div className={styles.attachmentContainer}>
-            <button className={styles.attachmentChip}>
+            <Button 
+              className={styles.attachmentChip}
+              icon={<FileText size={16} />}
+            >
               entregavfinal.pdf
-              <FileText size={16} />
-            </button>
+            </Button>
           </div>
         </div>
       </div>

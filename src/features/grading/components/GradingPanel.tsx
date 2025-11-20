@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { FileText } from 'lucide-react';
 import { useAppStore } from '../../../store/useAppStore';
+import { Button } from '../../../components/ui/Button';
 import styles from './GradingPanel.module.css';
 
 // Mock toolbar image URL (in a real app, this would be a local asset or a complex component)
@@ -78,17 +79,18 @@ export const GradingPanel: React.FC = () => {
       </div>
 
       <div className={styles.bottomBar}>
-        <div className={styles.noteIconCircle}>
-          <FileText size={18} color="#1f2937" />
-        </div>
+        <Button 
+          variant='secondary'
+          icon={<FileText size={18} color="#1f2937" />}
+        />
 
         <div className={styles.actionButtons}>
-          <button className={`${styles.btn} ${styles.btnDraft}`}>
+          <Button variant="secondary">
             Guardar borrador
-          </button>
-          <button className={`${styles.btn} ${styles.btnSend}`}>
+          </Button>
+          <Button>
             Enviar
-          </button>
+          </Button>
         </div>
       </div>
     </div>

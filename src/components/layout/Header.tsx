@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
+import { Button } from '../ui/Button';
 import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
@@ -25,14 +26,13 @@ export const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <button 
-        className={styles.navButton} 
+      <Button 
         onClick={prevStudent}
         disabled={!hasPrev}
+        icon={<ChevronLeft size={16} />}
       >
-        <ChevronLeft size={20} />
         Anterior
-      </button>
+      </Button>
 
       <div className={styles.headerContent}>
         <div className={styles.titleContainer}>
@@ -44,14 +44,13 @@ export const Header: React.FC = () => {
         </p>
       </div>
 
-      <button 
-        className={styles.navButton} 
+      <Button 
         onClick={nextStudent}
         disabled={!hasNext}
       >
         Siguiente
-        <ChevronRight size={20} />
-      </button>
+        <ChevronRight size={16} />
+      </Button>
     </header>
   );
 };
