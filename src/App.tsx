@@ -5,6 +5,7 @@ import { Layout } from './components/layout/Layout'
 import { StudentSubmission } from './features/grading/components/StudentSubmission'
 import { GradingPanel } from './features/grading/components/GradingPanel'
 import { usuarios as MOCK_USUARIOS, entregas as MOCK_ENTREGAS } from './data/mockData'
+import styles from './App.module.css'
 
 function App() {
   // Use shallow comparison to avoid re-renders when other parts of the store change (like draft)
@@ -25,8 +26,12 @@ function App() {
     <Layout>
       {entregaActual ? (
         <>
-          <StudentSubmission entrega={entregaActual} />
-          <GradingPanel />
+          <div className={styles.contentContainer}>
+            <StudentSubmission key={entregaActual.idEntregaTP} entrega={entregaActual} />
+          </div>
+          <div className={styles.fixedPanel}>
+            <GradingPanel />
+          </div>
         </>
       ) : (
         <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>

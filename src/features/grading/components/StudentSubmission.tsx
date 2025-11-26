@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { Calendar, FileText } from 'lucide-react';
 import { Entrega, VersionEntrega } from '../../../types';
 import { Button } from '../../../components/ui/Button';
@@ -11,13 +11,22 @@ interface StudentSubmissionProps {
 
 export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
   const [showHistory, setShowHistory] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const sortedVersions = [...entrega.versiones].sort((a, b) => 
-    new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+  const sortedVersions = useMemo(() => 
+    [...entrega.versiones].sort((a, b) => 
+      new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+    ),
+    [entrega.versiones]
   );
 
-  const versionsToShow = showHistory ? sortedVersions : [sortedVersions[0]];
+  const versionsToShow = showHistory ? sortedVersions : [sortedVersions[sortedVersions.length - 1]];
   const previousVersionsCount = sortedVersions.length - 1;
+
+  useLayoutEffect(() => {
+    // Scroll to bottom immediately before paint to maintain visual position of the latest version
+    bottomRef.current?.scrollIntoView({ block: 'end', behavior: 'instant' });
+  }, [showHistory, sortedVersions]);
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -82,6 +91,7 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
           </div>
         ))}
       </div>
+      <div ref={bottomRef} />
     </div>
   );
 });

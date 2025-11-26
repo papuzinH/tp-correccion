@@ -22,7 +22,7 @@ export const tpConfiguracion: TPConfiguracion = {
   consignaAdjuntos: null,
 };
 
-const version1: VersionEntrega = {
+const version1_1: VersionEntrega = {
   idVersionEntregaTP: 1001,
   idEntregaTP: 2001,
   fecha: "2024-10-28T10:00:00",
@@ -31,7 +31,7 @@ const version1: VersionEntrega = {
   adjuntos: [],
 };
 
-const version2: VersionEntrega = {
+const version1_2: VersionEntrega = {
   idVersionEntregaTP: 1002,
   idEntregaTP: 2001,
   fecha: "2024-10-30T18:13:00",
@@ -40,7 +40,34 @@ const version2: VersionEntrega = {
   adjuntos: ["entregaVfinal.pdf"],
 };
 
-const version3: VersionEntrega = {
+const version1_3: VersionEntrega = {
+  idVersionEntregaTP: 1005,
+  idEntregaTP: 2001,
+  fecha: "2024-10-31T12:00:00",
+  idUsuario: 3, // Alejo Perez
+  texto: "Aquí está mi contribución al trabajo grupal.",
+  adjuntos: ["aporteAlejo.pdf"],
+};
+
+const version1_4: VersionEntrega = {
+  idVersionEntregaTP: 1006,
+  idEntregaTP: 2001,
+  fecha: "2024-11-01T16:00:00",
+  idUsuario: 1, // Felipe Casdas
+  texto: "Última versión del trabajo grupal.",
+  adjuntos: ["entregaFinalGrupo.pdf"],
+};
+
+const version1_5: VersionEntrega = {
+  idVersionEntregaTP: 1007,
+  idEntregaTP: 2001,
+  fecha: "2024-11-02T09:00:00",
+  idUsuario: 2, // Pepito Lopez
+  texto: "Agrego algunos comentarios finales al trabajo.",
+  adjuntos: ["comentariosFinales.pdf"],
+};
+
+const version2_1: VersionEntrega = {
   idVersionEntregaTP: 1003,
   idEntregaTP: 2002,
   fecha: "2024-11-01T14:45:00",
@@ -49,7 +76,7 @@ const version3: VersionEntrega = {
   adjuntos: ["entregaFinal.pdf"],
 };
 
-const version4: VersionEntrega = {
+const version2_2: VersionEntrega = {
   idVersionEntregaTP: 1004,
   idEntregaTP: 2002,
   fecha: "2024-11-02T09:30:00",
@@ -61,13 +88,13 @@ const version4: VersionEntrega = {
 export const entrega1: Entrega = {
   idEntregaTP: 2001,
   integrantes: [1, 2, 3],
-  versiones: [version1, version2],
+  versiones: [version1_1, version1_2, version1_3, version1_4, version1_5],
 };
 
 export const entrega2: Entrega = {
   idEntregaTP: 2002,
   integrantes: [4, 5, 6],
-  versiones: [version3, version4],
+  versiones: [version2_1, version2_2],
 };
 
 export const entregas: Entrega[] = [entrega1, entrega2];
