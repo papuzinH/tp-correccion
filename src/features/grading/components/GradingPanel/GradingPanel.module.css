@@ -1,10 +1,6 @@
 .panelContainer {
-  /* Removed background and shadow to match the clean look in image 2, 
-     or keep it if it's part of the main container. 
-     Image 2 shows the grading panel controls floating directly on the background 
-     or inside a very subtle container. Let's keep it clean. */
   margin-top: 2rem;
-  max-width: 800px;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
 }

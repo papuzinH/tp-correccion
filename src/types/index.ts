@@ -25,6 +25,12 @@ export interface VersionEntrega {
   idUsuario: number;
   texto: string | null;
   adjuntos: string[];
+  fechaCorreccion?: string | null;
+  devolucion?: string | null;
+  adjuntosCorreccion?: string[] | null;
+  anotacionesPDF?: string | null;
+  nota?: number | null;
+  esReentrega?: boolean | null;
 }
 
 export interface Entrega {
