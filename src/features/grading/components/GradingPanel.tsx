@@ -4,14 +4,10 @@ import { useAppStore } from '../../../store/useAppStore';
 import { Button } from '../../../components/ui/Button';
 import styles from './GradingPanel.module.css';
 
-// Mock toolbar image URL (in a real app, this would be a local asset or a complex component)
-// Using a placeholder div with styles to simulate the toolbar for now as requested by "Fake WYSIWYG"
-// but trying to match the image better with CSS.
 
 export const GradingPanel: React.FC = () => {
-  const { draft, updateDraft } = useAppStore();
+  const { borrador, actualizarBorrador } = useAppStore();
   
-  // Use a ref for the debounce timer
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleFeedbackChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,15 +18,15 @@ export const GradingPanel: React.FC = () => {
     }
 
     debounceTimer.current = setTimeout(() => {
-      updateDraft({ feedback: value });
+      actualizarBorrador({ feedback: value });
     }, 500); // 500ms debounce
-  }, [updateDraft]);
+  }, [actualizarBorrador]);
 
   const handleScoreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    updateDraft({ score: Number(e.target.value) });
+    actualizarBorrador({ puntaje: Number(e.target.value) });
   };
 
-  const currentScore = draft?.score || 0;
+  const currentScore = borrador?.puntaje || 0;
 
   return (
     <div className={styles.panelContainer}>
@@ -60,8 +56,6 @@ export const GradingPanel: React.FC = () => {
 
       <div className={styles.editorContainer}>
         <div className={styles.toolbar}>
-           {/* Simulating the toolbar from the image with a static image or complex CSS would be ideal. 
-               For now, using a placeholder that looks like the image's toolbar structure */}
            <img 
              src="https://i.imgur.com/J8x5q5D.png" 
              alt="Toolbar" 
@@ -73,7 +67,7 @@ export const GradingPanel: React.FC = () => {
         <textarea 
           className={styles.textarea} 
           placeholder="Escriba su devolución aquí..."
-          defaultValue={draft?.feedback || 'La entrega está parcialmente bien. Deberían haber hecho bien el punto 2. Envíenme de nuevo la entrega completa con todos los puntos'}
+          defaultValue={borrador?.feedback || 'La entrega está parcialmente bien. Deberían haber hecho bien el punto 2. Envíenme de nuevo la entrega completa con todos los puntos'}
           onChange={handleFeedbackChange}
         />
       </div>

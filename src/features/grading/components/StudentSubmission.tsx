@@ -1,21 +1,19 @@
 import { memo, useState } from 'react';
 import { Calendar, FileText } from 'lucide-react';
-import { Student } from '../../../types/types';
+import { Usuario } from '../../../types';
 import { Button } from '../../../components/ui/Button';
 import { mockState } from '../../../data/mockData';
 import { VersionEntrega } from '../../../types';
 import styles from './StudentSubmission.module.css';
 
 interface StudentSubmissionProps {
-  student: Student;
+  usuario: Usuario;
 }
 
-export const StudentSubmission = memo(({ student }: StudentSubmissionProps) => {
-  // student prop is kept for interface compatibility but data comes from mockState as requested
+export const StudentSubmission = memo(({ usuario }: StudentSubmissionProps) => {
   const [showHistory, setShowHistory] = useState(false);
 
-  // Sort versions by date descending (newest first)
-  const sortedVersions = [...mockState.entrega.versiones].sort((a, b) => 
+  const sortedVersions = [...mockState.entrega1.versiones].sort((a, b) => 
     new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
   );
 

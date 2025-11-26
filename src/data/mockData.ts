@@ -40,14 +40,39 @@ const version2: VersionEntrega = {
   adjuntos: ["entregaVfinal.pdf"],
 };
 
-export const entrega: Entrega = {
+const version3: VersionEntrega = {
+  idVersionEntregaTP: 1003,
+  idEntregaTP: 2002,
+  fecha: "2024-11-01T14:45:00",
+  idUsuario: 4, // Alejo Perez
+  texto: "Aquí está la versión final del trabajo.",
+  adjuntos: ["entregaFinal.pdf"],
+};
+
+const version4: VersionEntrega = {
+  idVersionEntregaTP: 1004,
+  idEntregaTP: 2002,
+  fecha: "2024-11-02T09:30:00",
+  idUsuario: 5, // María López
+  texto: "Versión corregida con los comentarios del profe.",
+  adjuntos: ["entregaCorregida.pdf"],
+};
+
+export const entrega1: Entrega = {
   idEntregaTP: 2001,
-  integrantes: [1, 2, 3, 4, 5, 6],
+  integrantes: [1, 2, 3],
   versiones: [version1, version2],
+};
+
+export const entrega2: Entrega = {
+  idEntregaTP: 2002,
+  integrantes: [4, 5, 6],
+  versiones: [version3, version4],
 };
 
 export const mockState = {
   usuarios,
   tpConfiguracion,
-  entrega,
+  entrega1,
+  entrega2,
 };

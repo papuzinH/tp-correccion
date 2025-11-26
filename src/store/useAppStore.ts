@@ -1,57 +1,57 @@
 import { create } from 'zustand';
-import { GradingDraft, Student, Submission } from '../types/types';
+import { BorradorCorreccion, Usuario, Entrega } from '../types';
 
 interface AppState {
-  students: Student[];
-  submissions: Submission[];
-  currentStudentIndex: number;
-  draft: GradingDraft | null;
+  usuarios: Usuario[];
+  entregas: Entrega[];
+  indiceUsuarioActual: number;
+  borrador: BorradorCorreccion | null;
 
   // Actions
-  setStudents: (students: Student[]) => void;
-  setSubmissions: (submissions: Submission[]) => void;
-  nextStudent: () => void;
-  prevStudent: () => void;
-  updateDraft: (draft: Partial<GradingDraft>) => void;
-  resetDraft: () => void;
+  setUsuarios: (usuarios: Usuario[]) => void;
+  setEntregas: (entregas: Entrega[]) => void;
+  siguienteUsuario: () => void;
+  usuarioAnterior: () => void;
+  actualizarBorrador: (borrador: Partial<BorradorCorreccion>) => void;
+  resetearBorrador: () => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
-  students: [],
-  submissions: [],
-  currentStudentIndex: 0,
-  draft: null,
+  usuarios: [],
+  entregas: [],
+  indiceUsuarioActual: 0,
+  borrador: null,
 
-  setStudents: (students) => set({ students }),
-  setSubmissions: (submissions) => set({ submissions }),
+  setUsuarios: (usuarios) => set({ usuarios }),
+  setEntregas: (entregas) => set({ entregas }),
 
-  nextStudent: () => {
-    const { currentStudentIndex, students } = get();
-    if (currentStudentIndex < students.length - 1) {
-      set({ currentStudentIndex: currentStudentIndex + 1, draft: null });
+  siguienteUsuario: () => {
+    const { indiceUsuarioActual, usuarios } = get();
+    if (indiceUsuarioActual < usuarios.length - 1) {
+      set({ indiceUsuarioActual: indiceUsuarioActual + 1, borrador: null });
     }
   },
 
-  prevStudent: () => {
-    const { currentStudentIndex } = get();
-    if (currentStudentIndex > 0) {
-      set({ currentStudentIndex: currentStudentIndex - 1, draft: null });
+  usuarioAnterior: () => {
+    const { indiceUsuarioActual } = get();
+    if (indiceUsuarioActual > 0) {
+      set({ indiceUsuarioActual: indiceUsuarioActual - 1, borrador: null });
     }
   },
 
-  updateDraft: (newDraft) => set((state) => {
-    const currentDraft = state.draft || {
-      submissionId: '',
-      score: 0,
+  actualizarBorrador: (nuevoBorrador) => set((state) => {
+    const borradorActual = state.borrador || {
+      idEntregaTP: 0,
+      puntaje: 0,
       feedback: '',
-      criteria: {},
-      isComplete: false
+      criterios: {},
+      completo: false
     };
     
     return {
-      draft: { ...currentDraft, ...newDraft }
+      borrador: { ...borradorActual, ...nuevoBorrador }
     };
   }),
 
-  resetDraft: () => set({ draft: null }),
+  resetearBorrador: () => set({ borrador: null }),
 }));

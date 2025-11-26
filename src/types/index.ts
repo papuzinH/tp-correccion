@@ -3,8 +3,8 @@ export interface TPConfiguracion {
   idActividad: number;
   idEscala: number;
   alias: string;
-  fechaInicio: string; // ISO string
-  fechaVencimiento: string; // ISO string
+  fechaInicio: string; 
+  fechaVencimiento: string; 
   permiteEntregaFueraDeTermino: boolean;
   esGrupal: boolean;
   consigna: string | null;
@@ -21,7 +21,7 @@ export interface Usuario {
 export interface VersionEntrega {
   idVersionEntregaTP: number;
   idEntregaTP: number;
-  fecha: string; // ISO string
+  fecha: string; 
   idUsuario: number;
   texto: string | null;
   adjuntos: string[];
@@ -29,6 +29,14 @@ export interface VersionEntrega {
 
 export interface Entrega {
   idEntregaTP: number;
-  integrantes: number[]; // Array de IDs de usuario
+  integrantes: number[]; 
   versiones: VersionEntrega[];
+}
+
+export interface BorradorCorreccion {
+  idEntregaTP: number;
+  puntaje: number;
+  feedback: string;
+  criterios: Record<string, number>;
+  completo: boolean;
 }

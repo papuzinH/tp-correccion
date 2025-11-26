@@ -4,32 +4,26 @@ import { useAppStore } from './store/useAppStore'
 import { Layout } from './components/layout/Layout'
 import { StudentSubmission } from './features/grading/components/StudentSubmission'
 import { GradingPanel } from './features/grading/components/GradingPanel'
-
-// Mock data inicial
-const MOCK_STUDENTS = [
-  { id: '1', name: 'Ana García', email: 'ana.garcia@example.com' },
-  { id: '2', name: 'Carlos López', email: 'carlos.lopez@example.com' },
-  { id: '3', name: 'María Rodríguez', email: 'maria.rodriguez@example.com' },
-];
+import { usuarios as MOCK_USUARIOS } from './data/mockData'
 
 function App() {
   // Use shallow comparison to avoid re-renders when other parts of the store change (like draft)
-  const { setStudents, currentStudent } = useAppStore(
+  const { setUsuarios, usuarioActual } = useAppStore(
     useShallow((state) => ({
-      setStudents: state.setStudents,
-      currentStudent: state.students[state.currentStudentIndex],
+      setUsuarios: state.setUsuarios,
+      usuarioActual: state.usuarios[state.indiceUsuarioActual],
     }))
   );
 
   useEffect(() => {
-    setStudents(MOCK_STUDENTS);
-  }, [setStudents]);
+    setUsuarios(MOCK_USUARIOS);
+  }, [setUsuarios]);
 
   return (
     <Layout>
-      {currentStudent ? (
+      {usuarioActual ? (
         <>
-          <StudentSubmission student={currentStudent} />
+          <StudentSubmission usuario={usuarioActual} />
           <GradingPanel />
         </>
       ) : (

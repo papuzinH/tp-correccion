@@ -8,24 +8,24 @@ import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
   const { 
-    currentStudentIndex, 
-    students, 
-    nextStudent, 
-    prevStudent 
+    indiceUsuarioActual, 
+    usuarios, 
+    siguienteUsuario, 
+    usuarioAnterior, 
   } = useAppStore(
     useShallow((state) => ({
-      currentStudentIndex: state.currentStudentIndex,
-      students: state.students,
-      nextStudent: state.nextStudent,
-      prevStudent: state.prevStudent,
+      indiceUsuarioActual: state.indiceUsuarioActual,
+      usuarios: state.usuarios,
+      siguienteUsuario: state.siguienteUsuario,
+      usuarioAnterior: state.usuarioAnterior,
     }))
   );
 
-  const hasPrev = currentStudentIndex > 0;
-  const hasNext = currentStudentIndex < students.length - 1;
+  const hasPrev = indiceUsuarioActual > 0;
+  const hasNext = indiceUsuarioActual < usuarios.length - 1;
 
   // Get group members names from mock data
-  const groupMembers = mockState.entrega.integrantes
+  const groupMembers = mockState.entrega1.integrantes
     .map(id => mockState.usuarios.find(u => u.idUsuario === id))
     .filter(Boolean)
     .map(u => `${u?.nombre} ${u?.apellido}`)
@@ -34,7 +34,7 @@ export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <Button 
-        onClick={prevStudent}
+        onClick={usuarioAnterior}
         disabled={!hasPrev}
         icon={<ChevronLeft size={16} />}
       >
@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
       </div>
 
       <Button 
-        onClick={nextStudent}
+        onClick={siguienteUsuario}
         disabled={!hasNext}
       >
         Siguiente
