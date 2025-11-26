@@ -70,9 +70,12 @@ export const entrega2: Entrega = {
   versiones: [version3, version4],
 };
 
+export const entregas: Entrega[] = [entrega1, entrega2];
+
 export const mockState = {
   usuarios,
   tpConfiguracion,
   entrega1,
   entrega2,
+  entregas,
 };

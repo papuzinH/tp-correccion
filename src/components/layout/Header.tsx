@@ -8,25 +8,29 @@ import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
   const { 
-    indiceUsuarioActual, 
-    usuarios, 
-    siguienteUsuario, 
-    usuarioAnterior, 
+    indiceEntregaActual, 
+    entregas, 
+    usuarios,
+    siguienteEntrega, 
+    entregaAnterior, 
   } = useAppStore(
     useShallow((state) => ({
-      indiceUsuarioActual: state.indiceUsuarioActual,
+      indiceEntregaActual: state.indiceEntregaActual,
+      entregas: state.entregas,
       usuarios: state.usuarios,
-      siguienteUsuario: state.siguienteUsuario,
-      usuarioAnterior: state.usuarioAnterior,
+      siguienteEntrega: state.siguienteEntrega,
+      entregaAnterior: state.entregaAnterior,
     }))
   );
 
-  const hasPrev = indiceUsuarioActual > 0;
-  const hasNext = indiceUsuarioActual < usuarios.length - 1;
+  const hasPrev = indiceEntregaActual > 0;
+  const hasNext = indiceEntregaActual < entregas.length - 1;
 
-  // Get group members names from mock data
-  const groupMembers = mockState.entrega1.integrantes
-    .map(id => mockState.usuarios.find(u => u.idUsuario === id))
+  const entregaActual = entregas[indiceEntregaActual];
+
+  // Get group members names from current delivery
+  const groupMembers = entregaActual?.integrantes
+    .map(id => usuarios.find(u => u.idUsuario === id))
     .filter(Boolean)
     .map(u => `${u?.nombre} ${u?.apellido}`)
     .join(', ');
@@ -34,7 +38,7 @@ export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <Button 
-        onClick={usuarioAnterior}
+        onClick={entregaAnterior}
         disabled={!hasPrev}
         icon={<ChevronLeft size={16} />}
       >
@@ -54,7 +58,7 @@ export const Header: React.FC = () => {
       </div>
 
       <Button 
-        onClick={siguienteUsuario}
+        onClick={siguienteEntrega}
         disabled={!hasNext}
       >
         Siguiente

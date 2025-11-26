@@ -1,19 +1,18 @@
 import { memo, useState } from 'react';
 import { Calendar, FileText } from 'lucide-react';
-import { Usuario } from '../../../types';
+import { Entrega, VersionEntrega } from '../../../types';
 import { Button } from '../../../components/ui/Button';
 import { mockState } from '../../../data/mockData';
-import { VersionEntrega } from '../../../types';
 import styles from './StudentSubmission.module.css';
 
 interface StudentSubmissionProps {
-  usuario: Usuario;
+  entrega: Entrega;
 }
 
-export const StudentSubmission = memo(({ usuario }: StudentSubmissionProps) => {
+export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
   const [showHistory, setShowHistory] = useState(false);
 
-  const sortedVersions = [...mockState.entrega1.versiones].sort((a, b) => 
+  const sortedVersions = [...entrega.versiones].sort((a, b) => 
     new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
   );
 

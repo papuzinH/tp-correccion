@@ -4,14 +4,14 @@ import { BorradorCorreccion, Usuario, Entrega } from '../types';
 interface AppState {
   usuarios: Usuario[];
   entregas: Entrega[];
-  indiceUsuarioActual: number;
+  indiceEntregaActual: number;
   borrador: BorradorCorreccion | null;
 
   // Actions
   setUsuarios: (usuarios: Usuario[]) => void;
   setEntregas: (entregas: Entrega[]) => void;
-  siguienteUsuario: () => void;
-  usuarioAnterior: () => void;
+  siguienteEntrega: () => void;
+  entregaAnterior: () => void;
   actualizarBorrador: (borrador: Partial<BorradorCorreccion>) => void;
   resetearBorrador: () => void;
 }
@@ -19,23 +19,23 @@ interface AppState {
 export const useAppStore = create<AppState>((set, get) => ({
   usuarios: [],
   entregas: [],
-  indiceUsuarioActual: 0,
+  indiceEntregaActual: 0,
   borrador: null,
 
   setUsuarios: (usuarios) => set({ usuarios }),
   setEntregas: (entregas) => set({ entregas }),
 
-  siguienteUsuario: () => {
-    const { indiceUsuarioActual, usuarios } = get();
-    if (indiceUsuarioActual < usuarios.length - 1) {
-      set({ indiceUsuarioActual: indiceUsuarioActual + 1, borrador: null });
+  siguienteEntrega: () => {
+    const { indiceEntregaActual, entregas } = get();
+    if (indiceEntregaActual < entregas.length - 1) {
+      set({ indiceEntregaActual: indiceEntregaActual + 1, borrador: null });
     }
   },
 
-  usuarioAnterior: () => {
-    const { indiceUsuarioActual } = get();
-    if (indiceUsuarioActual > 0) {
-      set({ indiceUsuarioActual: indiceUsuarioActual - 1, borrador: null });
+  entregaAnterior: () => {
+    const { indiceEntregaActual } = get();
+    if (indiceEntregaActual > 0) {
+      set({ indiceEntregaActual: indiceEntregaActual - 1, borrador: null });
     }
   },
 
