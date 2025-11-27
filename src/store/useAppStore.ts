@@ -6,6 +6,7 @@ interface AppState {
   entregas: Entrega[];
   indiceEntregaActual: number;
   borrador: BorradorCorreccion | null;
+  archivoAbierto: string | null;
 
   // Actions
   setUsuarios: (usuarios: Usuario[]) => void;
@@ -14,6 +15,7 @@ interface AppState {
   entregaAnterior: () => void;
   actualizarBorrador: (borrador: Partial<BorradorCorreccion>) => void;
   resetearBorrador: () => void;
+  setArchivoAbierto: (archivo: string | null) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -21,6 +23,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   entregas: [],
   indiceEntregaActual: 0,
   borrador: null,
+  archivoAbierto: null,
 
   setUsuarios: (usuarios) => set({ usuarios }),
   setEntregas: (entregas) => set({ entregas }),
@@ -28,14 +31,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   siguienteEntrega: () => {
     const { indiceEntregaActual, entregas } = get();
     if (indiceEntregaActual < entregas.length - 1) {
-      set({ indiceEntregaActual: indiceEntregaActual + 1, borrador: null });
+      set({ indiceEntregaActual: indiceEntregaActual + 1, borrador: null, archivoAbierto: null });
     }
   },
 
   entregaAnterior: () => {
     const { indiceEntregaActual } = get();
     if (indiceEntregaActual > 0) {
-      set({ indiceEntregaActual: indiceEntregaActual - 1, borrador: null });
+      set({ indiceEntregaActual: indiceEntregaActual - 1, borrador: null, archivoAbierto: null });
     }
   },
 
@@ -54,4 +57,5 @@ export const useAppStore = create<AppState>((set, get) => ({
   }),
 
   resetearBorrador: () => set({ borrador: null }),
+  setArchivoAbierto: (archivo) => set({ archivoAbierto: archivo }),
 }));
