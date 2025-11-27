@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './GradingControls.module.css';
 
 interface GradingControlsProps {
@@ -6,7 +6,7 @@ interface GradingControlsProps {
   onScoreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export const GradingControls = ({ currentScore, onScoreChange }: GradingControlsProps) => {
+export const GradingControls = memo(({ currentScore, onScoreChange }: GradingControlsProps) => {
   return (
     <div className={styles.controlsRow}>
       <div className={styles.selectWrapper}>
@@ -32,4 +32,6 @@ export const GradingControls = ({ currentScore, onScoreChange }: GradingControls
       </div>
     </div>
   );
-};
+});
+
+GradingControls.displayName = 'GradingControls';

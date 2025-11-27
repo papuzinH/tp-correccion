@@ -16,6 +16,7 @@ export interface Usuario {
   nombre: string;
   apellido: string;
   avatarUrl?: string;
+  curso?: string;
 }
 
 export interface VersionEntrega {

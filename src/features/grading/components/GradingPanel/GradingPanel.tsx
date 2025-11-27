@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../../../store/useAppStore';
 import { GradingControls } from './GradingControls';
 import { GradingEditor } from './GradingEditor';
@@ -6,7 +7,12 @@ import { GradingActions } from './GradingActions';
 import styles from './GradingPanel.module.css';
 
 export const GradingPanel: React.FC = () => {
-  const { borrador, actualizarBorrador } = useAppStore();
+  const { borrador, actualizarBorrador } = useAppStore(
+    useShallow((state) => ({
+      borrador: state.borrador,
+      actualizarBorrador: state.actualizarBorrador,
+    }))
+  );
   
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 

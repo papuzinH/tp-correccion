@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Info, Calendar, FileText, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
 import { Button } from '../ui/Button';
-import { Modal } from '../ui/Modal';
 import { mockState, escalasDeNotas } from '../../data/mockData';
-import { formatDate } from '../../utils/formatters';
+import { Usuario } from '../../types';
+import { TPInfoModal } from './header/TPInfoModal';
+import { MembersModal } from './header/MembersModal';
 import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isEditMembersModalOpen, setIsEditMembersModalOpen] = useState(false);
   const { 
     indiceEntregaActual, 
     entregas, 
@@ -31,11 +33,14 @@ export const Header: React.FC = () => {
 
   const entregaActual = entregas[indiceEntregaActual];
 
-  // Get group members names from current delivery
-  const groupMembers = entregaActual?.integrantes
+  // Get group members objects
+  const integrantesObjects = entregaActual?.integrantes
     .map(id => usuarios.find(u => u.idUsuario === id))
-    .filter(Boolean)
-    .map(u => `${u?.nombre} ${u?.apellido}`)
+    .filter((u): u is Usuario => !!u) || [];
+
+  // Get group members names from current delivery
+  const groupMembers = integrantesObjects
+    .map(u => `${u.nombre} ${u.apellido}`)
     .join(', ');
 
   const escala = escalasDeNotas.find(e => e.idEscala === mockState.tpConfiguracion.idEscala);
@@ -83,53 +88,22 @@ export const Header: React.FC = () => {
         <ChevronRight size={16} />
       </Button>
 
-      <Modal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)}>
-        <div className={styles.modalSection}>
-          <h2 className={styles.modalTitle}>Información del Trabajo Práctico:</h2>
-          
-          <div className={styles.modalRow}>
-            <span className={styles.modalLabel}>Título:</span>
-            <span className={styles.modalValue}>{mockState.tpConfiguracion.alias}</span>
-          </div>
+      <TPInfoModal 
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        tpConfig={mockState.tpConfiguracion}
+        escalaNombre={escala?.nombre || 'No definida'}
+        groupMembers={groupMembers}
+        primeraEntrega={primeraEntrega}
+        onOpenEditMembers={() => setIsEditMembersModalOpen(true)}
+      />
 
-          <div className={styles.modalRow}>
-            <Calendar size={18} className="text-gray-500 mt-0.5" />
-            <span className={styles.modalLabel}>Vigencia:</span>
-            <span className={styles.modalValue}>
-              {formatDate(mockState.tpConfiguracion.fechaInicio)} a {formatDate(mockState.tpConfiguracion.fechaVencimiento)}
-            </span>
-          </div>
-
-          <div className={styles.modalRow}>
-            <FileText size={18} className="text-gray-500 mt-0.5" />
-            <span className={styles.modalLabel}>Escala de notas:</span>
-            <span className={styles.modalValue}>{escala?.nombre || 'No definida'}</span>
-          </div>
-
-          <button className={styles.consignaButton}>
-            <ExternalLink size={16} />
-            Abrir consigna TP
-          </button>
-        </div>
-
-        <div className={styles.modalSection}>
-          <h2 className={styles.modalTitle}>Información de la entrega:</h2>
-          
-          <div className={styles.modalRow}>
-            <span className={styles.modalLabel}>Entrega {mockState.tpConfiguracion.esGrupal ? 'grupal' : 'individual'}:</span>
-            <span className={styles.modalValue}>{groupMembers || 'Sin integrantes'}</span>
-          </div>
-
-          {primeraEntrega && (
-            <div className={styles.modalRow}>
-              <span className={styles.modalLabel}>Primera entrega:</span>
-              <span className={styles.modalValue}>
-                📅 {formatDate(primeraEntrega.fecha)}
-              </span>
-            </div>
-          )}
-        </div>
-      </Modal>
+      <MembersModal 
+        isOpen={isEditMembersModalOpen}
+        onClose={() => setIsEditMembersModalOpen(false)}
+        integrantes={integrantesObjects}
+      />
     </header>
   );
 };
+

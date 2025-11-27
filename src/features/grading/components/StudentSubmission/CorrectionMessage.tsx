@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { VersionEntrega } from '../../../../types';
 import { AttachmentList } from './AttachmentList';
 import { formatDate } from '../../../../utils/formatters';
@@ -7,7 +8,7 @@ interface CorrectionMessageProps {
   version: VersionEntrega;
 }
 
-export const CorrectionMessage = ({ version }: CorrectionMessageProps) => {
+export const CorrectionMessage = memo(({ version }: CorrectionMessageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -28,4 +29,6 @@ export const CorrectionMessage = ({ version }: CorrectionMessageProps) => {
       </div>
     </div>
   );
-};
+});
+
+CorrectionMessage.displayName = 'CorrectionMessage';

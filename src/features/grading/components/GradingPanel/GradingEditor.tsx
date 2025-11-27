@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './GradingEditor.module.css';
 
 interface GradingEditorProps {
@@ -6,7 +6,7 @@ interface GradingEditorProps {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const GradingEditor = ({ defaultValue, onChange }: GradingEditorProps) => {
+export const GradingEditor = memo(({ defaultValue, onChange }: GradingEditorProps) => {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.toolbar}>
@@ -26,4 +26,6 @@ export const GradingEditor = ({ defaultValue, onChange }: GradingEditorProps) =>
       />
     </div>
   );
-};
+});
+
+GradingEditor.displayName = 'GradingEditor';

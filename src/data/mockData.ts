@@ -24,17 +24,18 @@ export const escalasDeNotas = [
 ];
 
 export const usuarios: Usuario[] = [
-  { idUsuario: 1, nombre: 'Felipe', apellido: 'Casdas', avatarUrl: undefined },
-  { idUsuario: 2, nombre: 'Pepito', apellido: 'Lopez', avatarUrl: undefined },
-  { idUsuario: 3, nombre: 'Alejo', apellido: 'Perez', avatarUrl: undefined },
+  { idUsuario: 1, nombre: 'Felipe', apellido: 'Casdas', avatarUrl: undefined, curso: '4A' },
+  { idUsuario: 2, nombre: 'Pepito', apellido: 'Lopez', avatarUrl: undefined, curso: '4B' },
+  { idUsuario: 3, nombre: 'Alejo', apellido: 'Perez', avatarUrl: undefined, curso: '4A' },
   {
     idUsuario: 4,
     nombre: 'Armando',
     apellido: 'Augusto',
     avatarUrl: undefined,
+    curso: '4C'
   },
-  { idUsuario: 5, nombre: 'María', apellido: 'López', avatarUrl: undefined },
-  { idUsuario: 6, nombre: 'Belén', apellido: 'Escobar', avatarUrl: undefined },
+  { idUsuario: 5, nombre: 'María', apellido: 'López', avatarUrl: undefined, curso: '4B' },
+  { idUsuario: 6, nombre: 'Belén', apellido: 'Escobar', avatarUrl: undefined, curso: '4A' },
 ];
 
 export const tpConfiguracion: TPConfiguracion = {

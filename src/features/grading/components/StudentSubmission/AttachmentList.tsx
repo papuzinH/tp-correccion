@@ -1,3 +1,5 @@
+import { memo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { FileText } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import { useAppStore } from '../../../../store/useAppStore';
@@ -8,8 +10,13 @@ interface AttachmentListProps {
   variant: 'student' | 'teacher';
 }
 
-export const AttachmentList = ({ files, variant }: AttachmentListProps) => {
-  const { archivoAbierto, setArchivoAbierto } = useAppStore();
+export const AttachmentList = memo(({ files, variant }: AttachmentListProps) => {
+  const { archivoAbierto, setArchivoAbierto } = useAppStore(
+    useShallow((state) => ({
+      archivoAbierto: state.archivoAbierto,
+      setArchivoAbierto: state.setArchivoAbierto,
+    }))
+  );
 
   if (files.length === 0) return null;
 
@@ -35,4 +42,6 @@ export const AttachmentList = ({ files, variant }: AttachmentListProps) => {
       ))}
     </div>
   );
-};
+});
+
+AttachmentList.displayName = 'AttachmentList';

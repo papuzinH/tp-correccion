@@ -1,0 +1,122 @@
+.accordionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.accordionItem {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordionItem.expanded {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-color: var(--color-primary);
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.accordionHeader:hover {
+  background-color: #f9fafb;
+}
+
+.studentProfile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e0e7ff;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  object-fit: cover;
+}
+
+.studentInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.studentName {
+  font-weight: 500;
+  color: var(--color-text-main);
+  font-size: 0.95rem;
+}
+
+.studentCourse {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.accordionIcon {
+  color: var(--color-text-secondary);
+  transition: transform 0.3s ease;
+}
+
+.expanded .accordionIcon {
+  transform: rotate(180deg);
+  color: var(--color-primary);
+}
+
+.accordionContent {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+  background-color: #f9fafb;
+}
+
+.accordionContent.contentExpanded {
+  grid-template-rows: 1fr;
+  border-top: 1px solid var(--color-border);
+}
+
+.accordionInner {
+  overflow: hidden;
+}
+
+.observationTextarea {
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  
+  /* Animación Slide In */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.contentExpanded .observationTextarea {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.observationTextarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}

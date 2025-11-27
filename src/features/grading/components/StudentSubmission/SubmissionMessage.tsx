@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Calendar } from 'lucide-react';
 import { VersionEntrega } from '../../../../types';
 import { AttachmentList } from './AttachmentList';
@@ -10,7 +11,7 @@ interface SubmissionMessageProps {
   isGroup: boolean;
 }
 
-export const SubmissionMessage = ({ version, userName, isGroup }: SubmissionMessageProps) => {
+export const SubmissionMessage = memo(({ version, userName, isGroup }: SubmissionMessageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -29,4 +30,6 @@ export const SubmissionMessage = ({ version, userName, isGroup }: SubmissionMess
       </div>
     </div>
   );
-};
+});
+
+SubmissionMessage.displayName = 'SubmissionMessage';

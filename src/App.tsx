@@ -1,10 +1,12 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from './store/useAppStore'
 import { Layout } from './components/layout/Layout'
-import { StudentSubmission } from './features/grading/components/StudentSubmission/StudentSubmission'
-import { GradingPanel } from './features/grading/components/GradingPanel/GradingPanel'
 import { usuarios as MOCK_USUARIOS, entregas as MOCK_ENTREGAS } from './data/mockData'
+
+// Lazy loading para componentes pesados
+const StudentSubmission = lazy(() => import('./features/grading/components/StudentSubmission/StudentSubmission').then(m => ({ default: m.StudentSubmission })));
+const GradingPanel = lazy(() => import('./features/grading/components/GradingPanel/GradingPanel').then(m => ({ default: m.GradingPanel })));
 import TesisPDF from './data/Tesis.pdf'
 import styles from './App.module.css'
 
@@ -87,12 +89,14 @@ function App() {
           />
 
           <div className={styles.rightPanel}>
-            <div className={styles.contentContainer}>
-              <StudentSubmission key={entregaActual.idEntregaTP} entrega={entregaActual} />
-            </div>
-            <div className={styles.fixedPanel}>
-              <GradingPanel />
-            </div>
+            <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>Cargando...</div>}>
+              <div className={styles.contentContainer}>
+                <StudentSubmission key={entregaActual.idEntregaTP} entrega={entregaActual} />
+              </div>
+              <div className={styles.fixedPanel}>
+                <GradingPanel />
+              </div>
+            </Suspense>
           </div>
         </div>
       ) : (

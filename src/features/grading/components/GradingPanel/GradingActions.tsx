@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import { FileText } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import styles from './GradingActions.module.css';
 
-export const GradingActions = () => {
+export const GradingActions = memo(() => {
   return (
     <div className={styles.bottomBar}>
       <Button 
@@ -20,4 +21,6 @@ export const GradingActions = () => {
       </div>
     </div>
   );
-};
+});
+
+GradingActions.displayName = 'GradingActions';
