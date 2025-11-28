@@ -1,35 +1,64 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
+import { Button } from '../../../../components/ui/Button';
+import { IndividualGradingModal } from './IndividualGradingModal';
+import { Usuario } from '../../../../types';
 import styles from './GradingControls.module.css';
 
 interface GradingControlsProps {
   currentScore: number;
   onScoreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  scaleValues: (string | number)[];
+  integrantes: Usuario[];
 }
 
-export const GradingControls = memo(({ currentScore, onScoreChange }: GradingControlsProps) => {
+export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues, integrantes }: GradingControlsProps) => {
+  const [tipoDevolucion, setTipoDevolucion] = useState<string>('Tipo de devolución');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className={styles.controlsRow}>
       <div className={styles.selectWrapper}>
-        <select className={`${styles.select} ${styles.selectPrimary}`}>
-          <option value="standard">Tipo de devolución</option>
-          <option value="detailed">Detallada</option>
-          <option value="quick">Rápida</option>
+        <select 
+          className={`${styles.select} ${styles.selectPrimary}`}
+          value={tipoDevolucion}
+          onChange={(e) => setTipoDevolucion(e.target.value)}
+        >
+          <option value="Tipo de devolución" disabled>Tipo de devolución</option>
+          <option value="Calificación final">Calificación final</option>
+          <option value="Calificación individual">Calificación individual</option>
+          <option value="Solicitud de reentrega">Solicitud de reentrega</option>
         </select>
       </div>
 
       <div className={styles.selectWrapper}>
-        <select 
-          className={`${styles.select} ${styles.selectSecondary}`}
-          value={currentScore} 
-          onChange={onScoreChange}
-          disabled
-        >
-          <option value={0}>Ingrese calif.</option>
-          {[...Array(10)].map((_, i) => (
-            <option key={i + 1} value={i + 1}>{i + 1}</option>
-          ))}
-        </select>
+        {tipoDevolucion === "Calificación individual" ? (
+          <Button 
+            variant="secondary" 
+            icon={<span>📝</span>}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Asignar notas
+          </Button>
+        ) : (
+          <select 
+            className={`${styles.select} ${styles.selectPrimary}`}
+            value={currentScore} 
+            onChange={onScoreChange}
+            disabled={tipoDevolucion !== "Calificación final" && tipoDevolucion !== "Calificación individual"}
+          >
+            <option value={0} disabled>Ingrese calif.</option>
+            {scaleValues.map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
+          </select>
+        )}
       </div>
+      <IndividualGradingModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        integrantes={integrantes} 
+        scaleValues={scaleValues} 
+      />
     </div>
   );
 });

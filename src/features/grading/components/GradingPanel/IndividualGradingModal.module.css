@@ -1,0 +1,77 @@
+.modalContent {
+  max-width: 800px;
+  width: 100%;
+}
+
+.modalTitle {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.content {
+  display: flex;
+  gap: 2rem;
+}
+
+.left {
+  flex: 1;
+}
+
+.integrante {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background-color: var(--color-white);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.info {
+  flex: 1;
+}
+
+.nombre {
+  margin: 0;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.curso {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: var(--color-white);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  min-width: 100px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
