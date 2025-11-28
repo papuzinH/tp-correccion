@@ -1,6 +1,9 @@
-import { memo, useState, useRef, useLayoutEffect, useMemo } from 'react';
+import { memo, useRef, useLayoutEffect, useCallback } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Entrega, VersionEntrega } from '../../../../types';
-import { mockState } from '../../../../data/mockData';
+import { useAppStore } from '../../../../store/useAppStore';
+import { hasCorrection } from '../../../../utils/gradingHelpers';
+import { useVersions } from '../../../../hooks/useVersions';
 import { SubmissionMessage } from './SubmissionMessage';
 import { CorrectionMessage } from './CorrectionMessage';
 import styles from './StudentSubmission.module.css';
@@ -10,28 +13,19 @@ interface StudentSubmissionProps {
 }
 
 export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
-  const [showHistory, setShowHistory] = useState(false);
+  const { usuarios, tpConfiguracion } = useAppStore(useShallow(state => ({ usuarios: state.usuarios, tpConfiguracion: state.tpConfiguracion })));
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  const sortedVersions = useMemo(() =>
-    [...entrega.versiones].sort((a, b) =>
-      new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
-    ),
-    [entrega.versiones]
-  );
-
-  const versionsToShow = showHistory ? sortedVersions : [sortedVersions[sortedVersions.length - 1]];
-  const previousVersionsCount = sortedVersions.length - 1;
+  const { versionsToShow, previousVersionsCount, showHistory, toggleHistory } = useVersions(entrega);
 
   useLayoutEffect(() => {
     // Scroll to bottom immediately before paint to maintain visual position of the latest version
     bottomRef.current?.scrollIntoView({ block: 'end', behavior: 'instant' });
-  }, [showHistory, sortedVersions]);
+  }, [showHistory, versionsToShow]);
 
-  const getUserName = (userId: number) => {
-    const user = mockState.usuarios.find(u => u.idUsuario === userId);
+  const getUserName = useCallback((userId: number) => {
+    const user = usuarios.find(u => u.idUsuario === userId);
     return user ? `${user.nombre} ${user.apellido}` : 'Usuario desconocido';
-  };
+  }, [usuarios]);
 
   return (
     <div className={styles.container}>
@@ -41,7 +35,7 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
           className={styles.historyLink}
           onClick={(e) => {
             e.preventDefault();
-            setShowHistory(!showHistory);
+            toggleHistory();
           }}
         >
           {showHistory ? 'Ocultar entregas anteriores' : `Ver entregas anteriores (${previousVersionsCount})`}
@@ -50,23 +44,17 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
 
       <div className={styles.versionsList}>
         {versionsToShow.map((version: VersionEntrega) => {
-          const hasCorrection = 
-            version.fechaCorreccion != null || 
-            version.devolucion != null || 
-            (version.adjuntosCorreccion != null && version.adjuntosCorreccion.length > 0) || 
-            version.anotacionesPDF != null || 
-            version.nota != null || 
-            version.esReentrega != null;
+          const hasCorr = hasCorrection(version);
 
           return (
             <div key={version.idVersionEntregaTP} className={styles.versionBlock}>
               <SubmissionMessage 
                 version={version} 
                 userName={getUserName(version.idUsuario)}
-                isGroup={mockState.tpConfiguracion.esGrupal}
+                isGroup={tpConfiguracion.esGrupal}
               />
 
-              {hasCorrection && (
+              {hasCorr && (
                 <CorrectionMessage version={version} />
               )}
             </div>

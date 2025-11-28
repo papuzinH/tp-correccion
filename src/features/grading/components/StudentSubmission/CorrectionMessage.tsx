@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { VersionEntrega } from '../../../../types';
+import { getCorrectionType } from '../../../../utils/gradingHelpers';
 import { AttachmentList } from './AttachmentList';
 import { formatDate } from '../../../../utils/formatters';
 import styles from './CorrectionMessage.module.css';
@@ -13,7 +14,7 @@ export const CorrectionMessage = memo(({ version }: CorrectionMessageProps) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <span className={styles.headerText}>
-          Docente {version.esReentrega ? 'solicitó reentrega' : 'calificó'}
+          Docente {getCorrectionType(version)}
           {version.nota != null && ` (Nota: ${version.nota})`}
         </span>
         {version.fechaCorreccion && (

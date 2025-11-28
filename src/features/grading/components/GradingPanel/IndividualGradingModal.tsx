@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { Usuario } from '../../../../types';
+import { useAppStore } from '../../../../store/useAppStore';
 import styles from './IndividualGradingModal.module.css';
 
 interface IndividualGradingModalProps {
@@ -17,10 +19,16 @@ export const IndividualGradingModal: React.FC<IndividualGradingModalProps> = ({
   integrantes,
   scaleValues,
 }) => {
-  const [notas, setNotas] = useState<Record<number, number | string>>({});
+  const { borrador, actualizarBorrador } = useAppStore(useShallow(state => ({
+    borrador: state.borrador,
+    actualizarBorrador: state.actualizarBorrador,
+  })));
+
+  const [notas, setNotas] = useState<Record<number, number>>(borrador?.notasIndividuales || {});
 
   const handleNotaChange = (idUsuario: number, value: string) => {
-    setNotas(prev => ({ ...prev, [idUsuario]: value }));
+    const numValue = Number(value);
+    setNotas(prev => ({ ...prev, [idUsuario]: numValue }));
   };
 
   return (
@@ -42,6 +50,7 @@ export const IndividualGradingModal: React.FC<IndividualGradingModalProps> = ({
                   className={styles.select}
                   value={notas[integrante.idUsuario] || ''}
                   onChange={(e) => handleNotaChange(integrante.idUsuario, e.target.value)}
+                  aria-label={`Seleccionar nota para ${integrante.nombre} ${integrante.apellido}`}
                 >
                   <option value="" disabled>Ingrese calif.</option>
                   {scaleValues.map((val) => (
@@ -54,7 +63,13 @@ export const IndividualGradingModal: React.FC<IndividualGradingModalProps> = ({
         </div>
         <div className={styles.actions}>
           <Button variant="secondary" onClick={onClose}>Cancelar</Button>
-          <Button variant="primary" onClick={() => { /* lógica para asignar */ console.log(notas); onClose(); }}>Asignar</Button>
+          <Button variant="primary" onClick={() => { 
+            actualizarBorrador({ notasIndividuales: notas }); 
+            alert('Notas individuales asignadas'); 
+            onClose(); 
+          }}>
+            Asignar
+          </Button>
         </div>
       </div>
     </Modal>

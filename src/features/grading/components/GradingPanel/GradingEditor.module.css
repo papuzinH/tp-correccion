@@ -15,11 +15,23 @@
   display: flex;
   align-items: center;
   height: 36px;
+  gap: 0.5rem;
 }
 
-.toolbarImage {
-  display: block;
-  max-width: 100%;
+.toolbarButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 3px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbarButton:hover {
+  background-color: #d1d5db;
 }
 
 .textarea {

@@ -46,4 +46,5 @@ export interface BorradorCorreccion {
   feedback: string;
   criterios: Record<string, number>;
   completo: boolean;
+  notasIndividuales?: Record<number, number>;
 }

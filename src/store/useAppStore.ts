@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { BorradorCorreccion, Usuario, Entrega } from '../types';
+import { BorradorCorreccion, Usuario, Entrega, TPConfiguracion } from '../types';
+import { tpConfiguracion, escalasDeNotas } from '../data/mockData';
 
 interface AppState {
   usuarios: Usuario[];
@@ -7,6 +8,8 @@ interface AppState {
   indiceEntregaActual: number;
   borrador: BorradorCorreccion | null;
   archivoAbierto: string | null;
+  tpConfiguracion: TPConfiguracion;
+  escalasDeNotas: typeof escalasDeNotas;
 
   // Actions
   setUsuarios: (usuarios: Usuario[]) => void;
@@ -24,6 +27,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   indiceEntregaActual: 0,
   borrador: null,
   archivoAbierto: null,
+  tpConfiguracion,
+  escalasDeNotas,
 
   setUsuarios: (usuarios) => set({ usuarios }),
   setEntregas: (entregas) => set({ entregas }),

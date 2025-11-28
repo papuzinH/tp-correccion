@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import { Button } from '../../../../components/ui/Button';
 import { IndividualGradingModal } from './IndividualGradingModal';
 import { Usuario } from '../../../../types';
+import { useGradingModal } from '../../../../hooks/useGradingModal';
 import styles from './GradingControls.module.css';
 
 interface GradingControlsProps {
@@ -13,7 +14,7 @@ interface GradingControlsProps {
 
 export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues, integrantes }: GradingControlsProps) => {
   const [tipoDevolucion, setTipoDevolucion] = useState<string>('Tipo de devolución');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, openModal, closeModal } = useGradingModal();
 
   return (
     <div className={styles.controlsRow}>
@@ -22,6 +23,7 @@ export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues,
           className={`${styles.select} ${styles.selectPrimary}`}
           value={tipoDevolucion}
           onChange={(e) => setTipoDevolucion(e.target.value)}
+          aria-label="Seleccionar tipo de devolución"
         >
           <option value="Tipo de devolución" disabled>Tipo de devolución</option>
           <option value="Calificación final">Calificación final</option>
@@ -35,7 +37,7 @@ export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues,
           <Button 
             variant="secondary" 
             icon={<span>📝</span>}
-            onClick={() => setIsModalOpen(true)}
+            onClick={openModal}
           >
             Asignar notas
           </Button>
@@ -45,6 +47,7 @@ export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues,
             value={currentScore} 
             onChange={onScoreChange}
             disabled={tipoDevolucion !== "Calificación final" && tipoDevolucion !== "Calificación individual"}
+            aria-label="Seleccionar calificación"
           >
             <option value={0} disabled>Ingrese calif.</option>
             {scaleValues.map((val) => (
@@ -54,8 +57,8 @@ export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues,
         )}
       </div>
       <IndividualGradingModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isOpen} 
+        onClose={closeModal} 
         integrantes={integrantes} 
         scaleValues={scaleValues} 
       />
