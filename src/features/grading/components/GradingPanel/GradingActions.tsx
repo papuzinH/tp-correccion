@@ -7,16 +7,22 @@ interface GradingActionsProps {
   onSaveDraft: () => void;
   onSend: () => void;
   onFileClick: () => void;
+  attachedFilesCount?: number;
 }
 
-export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick }: GradingActionsProps) => {
+export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick, attachedFilesCount = 0 }: GradingActionsProps) => {
   return (
     <div className={styles.bottomBar}>
       <Button 
-        variant='secondary'
-        icon={<FileText size={18} color="#1f2937" />}
+        variant={attachedFilesCount > 0 ? 'primary' : 'secondary'}
+        icon={<FileText size={18} color={attachedFilesCount > 0 ? "#ffffff" : "#1f2937"} />}
         onClick={onFileClick}
-      />
+        className={styles.fileButton}
+      >
+        {attachedFilesCount > 0 && (
+          <span className={styles.badge}>{attachedFilesCount}</span>
+        )}
+      </Button>
 
       <div className={styles.actionButtons}>
         <Button variant="secondary" onClick={onSaveDraft}>

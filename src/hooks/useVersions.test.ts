@@ -7,8 +7,8 @@ const mockEntrega: Entrega = {
   idEntregaTP: 1,
   integrantes: [1, 2],
   versiones: [
-    { idVersionEntregaTP: 1, idEntregaTP: 1, fecha: '2024-01-01', idUsuario: 1, texto: 'Version 1' },
-    { idVersionEntregaTP: 2, idEntregaTP: 1, fecha: '2024-01-02', idUsuario: 2, texto: 'Version 2' },
+    { idVersionEntregaTP: 1, idEntregaTP: 1, fecha: '2024-01-01', idUsuario: 1, texto: 'Version 1', adjuntos: [] },
+    { idVersionEntregaTP: 2, idEntregaTP: 1, fecha: '2024-01-02', idUsuario: 2, texto: 'Version 2', adjuntos: [] },
   ],
 };
 

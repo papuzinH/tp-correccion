@@ -1,25 +1,29 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../../../store/useAppStore';
 import { GradingControls } from './GradingControls';
 import { GradingEditor } from './GradingEditor';
 import { GradingActions } from './GradingActions';
+import { AttachmentModal } from './AttachmentModal';
 import { Usuario } from '../../../../types';
 import styles from './GradingPanel.module.css';
 
 export const GradingPanel: React.FC = () => {
-  const { borrador, actualizarBorrador, entregas, indiceEntregaActual, usuarios, setArchivoAbierto, tpConfiguracion, escalasDeNotas } = useAppStore(
+  const { borrador, actualizarBorrador, entregas, indiceEntregaActual, usuarios, tpConfiguracion, escalasDeNotas } = useAppStore(
     useShallow((state) => ({
       borrador: state.borrador,
       actualizarBorrador: state.actualizarBorrador,
       entregas: state.entregas,
       indiceEntregaActual: state.indiceEntregaActual,
       usuarios: state.usuarios,
-      setArchivoAbierto: state.setArchivoAbierto,
       tpConfiguracion: state.tpConfiguracion,
       escalasDeNotas: state.escalasDeNotas,
     }))
   );
+  
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+  const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
+  const [tempAttachedFiles, setTempAttachedFiles] = useState<File[]>([]);
 
   const entregaActual = entregas[indiceEntregaActual];
   const escalaActual = escalasDeNotas.find(escala => escala.idEscala === tpConfiguracion.idEscala);
@@ -52,9 +56,23 @@ export const GradingPanel: React.FC = () => {
   }, [borrador, actualizarBorrador]);
 
   const handleFileClick = useCallback(() => {
-    // Por ahora, simular abrir un archivo de corrección
-    setArchivoAbierto('correccion.pdf');
-  }, [setArchivoAbierto]);
+    setTempAttachedFiles(attachedFiles);
+    setIsAttachmentModalOpen(true);
+  }, [attachedFiles]);
+
+  const handleAddFiles = useCallback((files: File[]) => {
+    setTempAttachedFiles(prev => [...prev, ...files]);
+  }, []);
+
+  const handleRemoveFile = useCallback((index: number) => {
+    setTempAttachedFiles(prev => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleAcceptAttachments = useCallback(() => {
+    setAttachedFiles(tempAttachedFiles);
+    console.log('Archivos adjuntos:', tempAttachedFiles);
+    setIsAttachmentModalOpen(false);
+  }, [tempAttachedFiles]);
 
   return (
     <div className={styles.panelContainer}>
@@ -74,6 +92,16 @@ export const GradingPanel: React.FC = () => {
         onSaveDraft={handleSaveDraft}
         onSend={handleSend}
         onFileClick={handleFileClick}
+        attachedFilesCount={attachedFiles.length}
+      />
+
+      <AttachmentModal
+        isOpen={isAttachmentModalOpen}
+        onClose={() => setIsAttachmentModalOpen(false)}
+        attachedFiles={tempAttachedFiles}
+        onAddFiles={handleAddFiles}
+        onRemoveFile={handleRemoveFile}
+        onAccept={handleAcceptAttachments}
       />
     </div>
   );
