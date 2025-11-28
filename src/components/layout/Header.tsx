@@ -6,7 +6,7 @@ import { Button } from '../ui/Button';
 import { mockState, escalasDeNotas } from '../../data/mockData';
 import { Usuario } from '../../types';
 import { TPInfoModal } from './header/TPInfoModal';
-import { MembersModal } from './header/MembersModal';
+import { IntegrantesModal } from './header/IntegrantesModal';
 import styles from './Header.module.css';
 
 export const Header: React.FC = () => {
@@ -17,7 +17,8 @@ export const Header: React.FC = () => {
     entregas, 
     usuarios,
     siguienteEntrega, 
-    entregaAnterior, 
+    entregaAnterior,
+    actualizarIntegrantes,
   } = useAppStore(
     useShallow((state) => ({
       indiceEntregaActual: state.indiceEntregaActual,
@@ -25,6 +26,7 @@ export const Header: React.FC = () => {
       usuarios: state.usuarios,
       siguienteEntrega: state.siguienteEntrega,
       entregaAnterior: state.entregaAnterior,
+      actualizarIntegrantes: state.actualizarIntegrantes,
     }))
   );
 
@@ -98,10 +100,11 @@ export const Header: React.FC = () => {
         onOpenEditMembers={() => setIsEditMembersModalOpen(true)}
       />
 
-      <MembersModal 
+      <IntegrantesModal 
         isOpen={isEditMembersModalOpen}
         onClose={() => setIsEditMembersModalOpen(false)}
         integrantes={integrantesObjects}
+        onSave={actualizarIntegrantes}
       />
     </header>
   );

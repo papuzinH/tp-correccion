@@ -1,0 +1,77 @@
+.modalTitle {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.chipsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 1rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.chipName {
+  margin-right: 0.5rem;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.removeButton:hover {
+  color: #333;
+}
+
+.searchContainer {
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.suggestionItem:hover {
+  background-color: #f0f0f0;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

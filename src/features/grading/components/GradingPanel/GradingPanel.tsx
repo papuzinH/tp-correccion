@@ -4,7 +4,7 @@ import { useAppStore } from '../../../../store/useAppStore';
 import { GradingControls } from './GradingControls';
 import { GradingEditor } from './GradingEditor';
 import { GradingActions } from './GradingActions';
-import { AttachmentModal } from './AttachmentModal';
+import AttachmentModal from './AttachmentModal';
 import { Usuario } from '../../../../types';
 import styles from './GradingPanel.module.css';
 

@@ -19,6 +19,7 @@ interface AppState {
   actualizarBorrador: (borrador: Partial<BorradorCorreccion>) => void;
   resetearBorrador: () => void;
   setArchivoAbierto: (archivo: string | null) => void;
+  actualizarIntegrantes: (integrantes: Usuario[]) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -63,4 +64,13 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   resetearBorrador: () => set({ borrador: null }),
   setArchivoAbierto: (archivo) => set({ archivoAbierto: archivo }),
+
+  actualizarIntegrantes: (integrantes) => set((state) => {
+    const nuevasEntregas = [...state.entregas];
+    nuevasEntregas[state.indiceEntregaActual] = {
+      ...nuevasEntregas[state.indiceEntregaActual],
+      integrantes: integrantes.map(u => u.idUsuario)
+    };
+    return { entregas: nuevasEntregas };
+  }),
 }));

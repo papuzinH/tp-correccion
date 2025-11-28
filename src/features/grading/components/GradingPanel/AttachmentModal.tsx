@@ -14,7 +14,7 @@ interface AttachmentModalProps {
   onAccept: () => void;
 }
 
-export const AttachmentModal: React.FC<AttachmentModalProps> = ({
+const AttachmentModal: React.FC<AttachmentModalProps> = ({
   isOpen,
   onClose,
   attachedFiles,
@@ -61,3 +61,5 @@ export const AttachmentModal: React.FC<AttachmentModalProps> = ({
     </Modal>
   );
 };
+
+export default AttachmentModal;
