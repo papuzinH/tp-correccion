@@ -61,6 +61,23 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
           );
         })}
       </div>
+      
+      {versionsToShow.length > 0 && (() => {
+        const latestVersion = versionsToShow[versionsToShow.length - 1];
+        const hasCorrection = latestVersion.fechaCorreccion !== null;
+        
+        if (hasCorrection) {
+          return (
+            <div className={styles.statusSeparator}>
+              {latestVersion.esReentrega 
+                ? "Esperando reentrega de los estudiantes" 
+                : "Calificación enviada"}
+            </div>
+          );
+        }
+        return null;
+      })()}
+
       <div ref={bottomRef} />
     </div>
   );

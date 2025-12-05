@@ -12,7 +12,6 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 1rem;
   font-size: 0.9rem;
   color: var(--color-text-main);
   padding: 0 0.5rem;
@@ -46,4 +45,12 @@
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
+}
+
+.grade {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary);
 }

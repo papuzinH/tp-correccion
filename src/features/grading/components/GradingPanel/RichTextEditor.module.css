@@ -1,0 +1,96 @@
+.container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.container:focus-within {
+  border-color: #4a80ff;
+}
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.btn {
+  background: #f7f7f7;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #ececec;
+}
+
+.active {
+  background: #4a80ff;
+  color: white;
+  border-color: #4a80ff;
+}
+
+/* Ahora esta clase va directo sobre el nodo ProseMirror */
+.editor {
+  min-height: 140px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 4px;
+  outline: none;
+}
+
+.editor img {
+  display: block;
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+.editor :global(.ProseMirror-selectednode) {
+  outline: 3px solid #4a80ff;
+}
+
+.editor p {
+  margin: 0 0 6px;
+}
+
+/* Listas */
+.editor ul,
+.editor ol {
+  padding-left: 28px;
+  margin: 6px 0;
+}
+
+.editor li {
+  margin-bottom: 4px;
+  display: list-item;
+}
+
+.ProseMirror img {
+  display: block;
+  max-width: 100%;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #4a80ff;
+  border-radius: 50%;
+  right: -5px;
+  bottom: -5px;
+  cursor: se-resize;
+}

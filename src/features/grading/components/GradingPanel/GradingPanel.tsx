@@ -20,7 +20,7 @@ export const GradingPanel: React.FC = () => {
       escalasDeNotas: state.escalasDeNotas,
     }))
   );
-  
+
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
   const [tempAttachedFiles, setTempAttachedFiles] = useState<File[]>([]);
@@ -30,8 +30,12 @@ export const GradingPanel: React.FC = () => {
   const scaleValues = escalaActual ? escalaActual.valores : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const integrantes = useMemo(() => entregaActual ? entregaActual.integrantes.map(id => usuarios.find(u => u.idUsuario === id)).filter(Boolean) as Usuario[] : [], [entregaActual, usuarios]);
 
-  const handleFeedbackChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    actualizarBorrador({ feedback: e.target.value });
+  // Verificar si la entrega está esperando corrección
+  const ultimaVersion = entregaActual?.versiones[entregaActual.versiones.length - 1];
+  const esperandoCorreccion = ultimaVersion ? ultimaVersion.fechaCorreccion === null : false;
+
+  const handleFeedbackChange = useCallback((html: string) => {
+    actualizarBorrador({ feedback: html });
   }, [actualizarBorrador]);
 
   const handleScoreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -74,21 +78,25 @@ export const GradingPanel: React.FC = () => {
     setIsAttachmentModalOpen(false);
   }, [tempAttachedFiles]);
 
+  if (!esperandoCorreccion) {
+    return null;
+  }
+
   return (
     <div className={styles.panelContainer}>
-      <GradingControls 
-        currentScore={currentScore} 
+      <GradingControls
+        currentScore={currentScore}
         onScoreChange={handleScoreChange}
         scaleValues={scaleValues}
         integrantes={integrantes}
       />
 
-      <GradingEditor 
-        value={currentFeedback} 
-        onChange={handleFeedbackChange} 
+      <GradingEditor
+        value={currentFeedback}
+        onChange={handleFeedbackChange}
       />
 
-      <GradingActions 
+      <GradingActions
         onSaveDraft={handleSaveDraft}
         onSend={handleSend}
         onFileClick={handleFileClick}

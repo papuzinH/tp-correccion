@@ -12,5 +12,5 @@ export const hasCorrection = (version: VersionEntrega) => {
 };
 
 export const getCorrectionType = (version: VersionEntrega) => {
-  return version.esReentrega ? 'solicitó reentrega' : 'calificó';
+  return version.esReentrega ? 'solicitó reentrega' : 'envió una calificación final';
 };

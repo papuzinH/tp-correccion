@@ -14,18 +14,16 @@ export const CorrectionMessage = memo(({ version }: CorrectionMessageProps) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <span className={styles.headerText}>
-          Docente {getCorrectionType(version)}
-          {version.nota != null && ` (Nota: ${version.nota})`}
-        </span>
-        {version.fechaCorreccion && (
-          <span className={styles.date}>
-            - {formatDate(version.fechaCorreccion)}
-          </span>
-        )}
-      </div>
+          Docente {getCorrectionType(version)} - {version.fechaCorreccion && formatDate(version.fechaCorreccion)}
 
+
+        </span>
+      </div>
       <div className={styles.bubble}>
         {version.devolucion && <p className={styles.text}>{version.devolucion}</p>}
+        {version.nota != null && (
+          <p className={styles.grade}>Calificación: {version.nota}</p>
+        )}
         <AttachmentList files={version.adjuntosCorreccion || []} variant="teacher" />
       </div>
     </div>

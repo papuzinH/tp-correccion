@@ -153,8 +153,8 @@ const version2_2: VersionEntrega = {
   devolucion: 'Corrección recibida y aplicada.',
   adjuntosCorreccion: [],
   anotacionesPDF: null,
-  nota: null,
-  esReentrega: true,
+  nota: 9,
+  esReentrega: false,
 };
 
 export const entrega1: Entrega = {

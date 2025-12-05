@@ -45,3 +45,23 @@
   text-decoration: underline;
 }
 
+.statusSeparator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.statusSeparator::before,
+.statusSeparator::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+  margin: 0 1rem;
+}
+
