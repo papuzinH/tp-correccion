@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Modal } from '../../../../components/ui/Modal';
-import { Button } from '../../../../components/ui/Button';
+import { Modal } from '../../../../../components/ui/Modal';
+import { Button } from '../../../../../components/ui/Button';
 import { X, Image as ImageIcon } from 'lucide-react';
 import styles from './EditorImageModal.module.css';
 

@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { FileText } from 'lucide-react';
-import { Button } from '../../../../components/ui/Button';
-import { useAppStore } from '../../../../store/useAppStore';
+import { Button } from '../../../../../components/ui/Button';
+import { useAppStore } from '../../../../../store/useAppStore';
 import styles from './AttachmentList.module.css';
 
 interface AttachmentListProps {

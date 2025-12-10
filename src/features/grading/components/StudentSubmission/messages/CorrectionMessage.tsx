@@ -1,11 +1,11 @@
 import { memo, useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { FileText } from 'lucide-react';
-import { VersionEntrega } from '../../../../types';
-import { getCorrectionType } from '../../../../utils/gradingHelpers';
-import { AttachmentList } from './AttachmentList';
-import { formatDate } from '../../../../utils/formatters';
-import { useAppStore } from '../../../../store/useAppStore';
+import { VersionEntrega } from '../../../../../types';
+import { getCorrectionType } from '../../../../../utils/gradingHelpers';
+import { AttachmentList } from '../attachments/AttachmentList';
+import { formatDate } from '../../../../../utils/formatters';
+import { useAppStore } from '../../../../../store/useAppStore';
 import styles from './CorrectionMessage.module.css';
 
 interface CorrectionMessageProps {

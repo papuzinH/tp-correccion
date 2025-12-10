@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
-import { Button } from '../../../../components/ui/Button';
-import { IndividualGradingModal } from './IndividualGradingModal';
-import { Usuario } from '../../../../types';
-import { useGradingModal } from '../../../../hooks/useGradingModal';
+import { Button } from '../../../../../components/ui/Button';
+import { IndividualGradingModal } from '../modals/IndividualGradingModal';
+import { Usuario } from '../../../../../types';
+import { useGradingModal } from '../../../../../hooks/useGradingModal';
+import { TipoDevolucion } from '../../../types';
 import styles from './GradingControls.module.css';
 
 interface GradingControlsProps {
@@ -10,8 +11,8 @@ interface GradingControlsProps {
   onScoreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   scaleValues: (string | number)[];
   integrantes: Usuario[];
-  tipoDevolucion: string;
-  setTipoDevolucion: (tipo: string) => void;
+  tipoDevolucion: TipoDevolucion;
+  setTipoDevolucion: (tipo: TipoDevolucion) => void;
 }
 
 export const GradingControls = memo(({ 
@@ -30,7 +31,7 @@ export const GradingControls = memo(({
         <select 
           className={`${styles.select} ${styles.selectPrimary}`}
           value={tipoDevolucion}
-          onChange={(e) => setTipoDevolucion(e.target.value)}
+          onChange={(e) => setTipoDevolucion(e.target.value as TipoDevolucion)}
           aria-label="Seleccionar tipo de devolución"
         >
           <option value="Tipo de devolución" disabled>Tipo de devolución</option>
@@ -54,7 +55,7 @@ export const GradingControls = memo(({
             className={`${styles.select} ${styles.selectPrimary}`}
             value={currentScore ?? ""} 
             onChange={onScoreChange}
-            disabled={tipoDevolucion !== "Calificación final" && tipoDevolucion !== "Calificación individual"}
+            disabled={tipoDevolucion !== "Calificación final"}
             aria-label="Seleccionar calificación"
           >
             <option value="" disabled>Ingrese calif.</option>

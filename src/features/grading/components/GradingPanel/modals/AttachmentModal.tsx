@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Modal } from '../../../../components/ui/Modal';
-import { Button } from '../../../../components/ui/Button';
+import { Modal } from '../../../../../components/ui/Modal';
+import { Button } from '../../../../../components/ui/Button';
 import { X, FileText } from 'lucide-react';
 import styles from './AttachmentModal.module.css';
 

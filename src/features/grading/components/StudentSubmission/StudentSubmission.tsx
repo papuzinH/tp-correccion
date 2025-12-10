@@ -4,8 +4,8 @@ import { Entrega, VersionEntrega } from '../../../../types';
 import { useAppStore } from '../../../../store/useAppStore';
 import { hasCorrection } from '../../../../utils/gradingHelpers';
 import { useVersions } from '../../../../hooks/useVersions';
-import { SubmissionMessage } from './SubmissionMessage';
-import { CorrectionMessage } from './CorrectionMessage';
+import { SubmissionMessage } from './messages/SubmissionMessage';
+import { CorrectionMessage } from './messages/CorrectionMessage';
 import styles from './StudentSubmission.module.css';
 
 interface StudentSubmissionProps {
