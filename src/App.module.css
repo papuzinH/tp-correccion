@@ -46,7 +46,6 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  min-width: 450px;
   background-color: var(--color-background);
 }
 

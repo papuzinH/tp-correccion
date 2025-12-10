@@ -8,13 +8,15 @@ import styles from './AttachmentList.module.css';
 interface AttachmentListProps {
   files: string[];
   variant: 'student' | 'teacher';
+  clearAnnotations?: boolean;
 }
 
-export const AttachmentList = memo(({ files, variant }: AttachmentListProps) => {
-  const { archivoAbierto, setArchivoAbierto } = useAppStore(
+export const AttachmentList = memo(({ files, variant, clearAnnotations = false }: AttachmentListProps) => {
+  const { archivoAbierto, setArchivoAbierto, actualizarBorrador } = useAppStore(
     useShallow((state) => ({
       archivoAbierto: state.archivoAbierto,
       setArchivoAbierto: state.setArchivoAbierto,
+      actualizarBorrador: state.actualizarBorrador,
     }))
   );
 
@@ -24,6 +26,9 @@ export const AttachmentList = memo(({ files, variant }: AttachmentListProps) => 
     if (archivoAbierto === file) {
       setArchivoAbierto(null);
     } else {
+      if (clearAnnotations) {
+        actualizarBorrador({ anotacionesPDF: null });
+      }
       setArchivoAbierto(file);
     }
   };

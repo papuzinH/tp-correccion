@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from './store/useAppStore'
 import { Layout } from './components/layout/Layout'
 import { usuarios as MOCK_USUARIOS, entregas as MOCK_ENTREGAS } from './data/mockData'
+import { AdobePDFViewer } from './components/ui/AdobePDFViewer'
 
 // Lazy loading para componentes pesados
 const StudentSubmission = lazy(() => import('./features/grading/components/StudentSubmission/StudentSubmission').then(m => ({ default: m.StudentSubmission })));
@@ -12,12 +13,14 @@ import styles from './App.module.css'
 
 function App() {
   // Use shallow comparison to avoid re-renders when other parts of the store change (like draft)
-  const { setUsuarios, setEntregas, entregaActual, archivoAbierto } = useAppStore(
+  const { setUsuarios, setEntregas, entregaActual, archivoAbierto, borrador, actualizarBorrador } = useAppStore(
     useShallow((state) => ({
       setUsuarios: state.setUsuarios,
       setEntregas: state.setEntregas,
       entregaActual: state.entregas[state.indiceEntregaActual],
       archivoAbierto: state.archivoAbierto,
+      borrador: state.borrador,
+      actualizarBorrador: state.actualizarBorrador,
     }))
   );
 
@@ -57,6 +60,10 @@ function App() {
     setEntregas(MOCK_ENTREGAS);
   }, [setUsuarios, setEntregas]);
 
+  const handleAnnotationsChange = useCallback((annotations: string) => {
+    actualizarBorrador({ anotacionesPDF: annotations });
+  }, [actualizarBorrador]);
+
   return (
     <Layout>
       {entregaActual ? (
@@ -69,16 +76,15 @@ function App() {
             }}
           >
             <div style={{ width: sidebarWidth, height: '100%' }}>
-              <iframe 
-                src={TesisPDF} 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  border: 'none',
-                  pointerEvents: isResizing ? 'none' : 'auto'
-                }} 
-                title="Visor de archivos"
-              />
+              {archivoAbierto && (
+                <AdobePDFViewer 
+                  url={TesisPDF}
+                  fileName={archivoAbierto}
+                  clientId="05e453fb3be64b418d2441a9db2bdbd6"
+                  initialAnnotations={borrador?.anotacionesPDF}
+                  onAnnotationsChange={handleAnnotationsChange}
+                />
+              )}
             </div>
           </div>
           

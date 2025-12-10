@@ -64,7 +64,7 @@ export const GradingPanel: React.FC = () => {
       fechaCorreccion: new Date().toISOString(),
       devolucion: borrador?.feedback || currentFeedback,
       adjuntosCorreccion: attachedFiles.map(f => f.name),
-      anotacionesPDF: null,
+      anotacionesPDF: borrador?.anotacionesPDF || null,
       esReentrega: tipoDevolucion === 'Solicitud de reentrega',
       nota: null,
       notasIndividuales: null

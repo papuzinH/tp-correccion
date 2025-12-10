@@ -45,6 +45,13 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
       <div className={styles.versionsList}>
         {versionsToShow.map((version: VersionEntrega) => {
           const hasCorr = hasCorrection(version);
+          
+          // Determinar si se deben limpiar las anotaciones al abrir los adjuntos de esta versión.
+          // Solo mantenemos las anotaciones si es la última versión real Y está esperando corrección.
+          const ultimaVersionReal = entrega.versiones[entrega.versiones.length - 1];
+          const isLatestReal = version.idVersionEntregaTP === ultimaVersionReal.idVersionEntregaTP;
+          const waitingForCorrection = ultimaVersionReal.fechaCorreccion === null;
+          const shouldClearAnnotations = !(isLatestReal && waitingForCorrection);
 
           return (
             <div key={version.idVersionEntregaTP} className={styles.versionBlock}>
@@ -52,6 +59,7 @@ export const StudentSubmission = memo(({ entrega }: StudentSubmissionProps) => {
                 version={version} 
                 userName={getUserName(version.idUsuario)}
                 isGroup={tpConfiguracion.esGrupal}
+                clearAnnotations={shouldClearAnnotations}
               />
 
               {hasCorr && (

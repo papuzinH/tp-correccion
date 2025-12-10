@@ -9,9 +9,10 @@ interface SubmissionMessageProps {
   version: VersionEntrega;
   userName: string;
   isGroup: boolean;
+  clearAnnotations?: boolean;
 }
 
-export const SubmissionMessage = memo(({ version, userName, isGroup }: SubmissionMessageProps) => {
+export const SubmissionMessage = memo(({ version, userName, isGroup, clearAnnotations }: SubmissionMessageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -26,7 +27,7 @@ export const SubmissionMessage = memo(({ version, userName, isGroup }: Submissio
 
       <div className={styles.bubble}>
         {version.texto && <p className={styles.text}>{version.texto}</p>}
-        <AttachmentList files={version.adjuntos} variant="student" />
+        <AttachmentList files={version.adjuntos} variant="student" clearAnnotations={clearAnnotations} />
       </div>
     </div>
   );

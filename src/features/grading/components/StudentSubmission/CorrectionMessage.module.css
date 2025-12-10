@@ -54,3 +54,23 @@
   font-weight: 600;
   color: var(--color-primary);
 }
+
+.pdfChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e0e7ff;
+  color: var(--color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #c7d2fe;
+  margin-top: 0.75rem;
+  transition: background-color 0.2s;
+}
+
+.pdfChip:hover {
+  background-color: #c7d2fe;
+}
