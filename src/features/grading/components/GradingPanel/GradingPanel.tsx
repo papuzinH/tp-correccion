@@ -5,7 +5,7 @@ import { GradingControls } from './GradingControls';
 import { GradingEditor } from './GradingEditor';
 import { GradingActions } from './GradingActions';
 import AttachmentModal from './AttachmentModal';
-import { Usuario } from '../../../../types';
+import { Usuario, VersionEntrega } from '../../../../types';
 import styles from './GradingPanel.module.css';
 
 export const GradingPanel: React.FC = () => {
@@ -60,7 +60,7 @@ export const GradingPanel: React.FC = () => {
       return;
     }
 
-    const datosCorreccion: any = {
+    const datosCorreccion: Partial<VersionEntrega> = {
       fechaCorreccion: new Date().toISOString(),
       devolucion: borrador?.feedback || currentFeedback,
       adjuntosCorreccion: attachedFiles.map(f => f.name),

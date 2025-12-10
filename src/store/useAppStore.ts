@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { BorradorCorreccion, Usuario, Entrega, TPConfiguracion } from '../types';
+import { BorradorCorreccion, Usuario, Entrega, TPConfiguracion, VersionEntrega } from '../types';
 import { tpConfiguracion, escalasDeNotas } from '../data/mockData';
 
 interface AppState {

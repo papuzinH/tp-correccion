@@ -48,4 +48,5 @@ export interface BorradorCorreccion {
   criterios: Record<string, number>;
   completo: boolean;
   notasIndividuales?: Record<number, number | string>;
+  anotacionesPDF?: string | null;
 }

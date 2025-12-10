@@ -1,8 +1,42 @@
 import React, { useEffect, useRef } from 'react';
 
+interface AdobeEvent {
+  type: string;
+  data: unknown;
+}
+
+interface AdobeAnnotationManager {
+  addAnnotations: (annotations: unknown[]) => Promise<void>;
+  getAnnotations: () => Promise<unknown[]>;
+  registerEventListener: (callback: (event: AdobeEvent) => void, options?: unknown) => void;
+}
+
+interface AdobeViewer {
+  getAnnotationManager: () => Promise<AdobeAnnotationManager>;
+}
+
+interface AdobeDCView {
+  registerCallback: (type: unknown, callback: () => Promise<unknown>, options: unknown) => void;
+  previewFile: (content: unknown, options: unknown) => Promise<AdobeViewer>;
+}
+
+interface AdobeDC {
+  View: {
+    new (options: { clientId: string; divId: string }): AdobeDCView;
+    Enum: {
+      CallbackType: {
+        GET_USER_PROFILE_API: string;
+      };
+      ApiResponseCode: {
+        SUCCESS: string;
+      };
+    };
+  };
+}
+
 declare global {
   interface Window {
-    AdobeDC: any;
+    AdobeDC: AdobeDC;
   }
 }
 
@@ -67,8 +101,8 @@ export const AdobePDFViewer: React.FC<AdobePDFViewerProps> = ({
         includePDFAnnotations: true
       });
 
-      previewFilePromise.then((adobeViewer: any) => {
-        adobeViewer.getAnnotationManager().then((annotationManager: any) => {
+      previewFilePromise.then((adobeViewer: AdobeViewer) => {
+        adobeViewer.getAnnotationManager().then((annotationManager: AdobeAnnotationManager) => {
           // Cargar anotaciones iniciales si existen y no se han cargado ya
           if (initialAnnotations && !isLoadedRef.current) {
             try {
@@ -77,7 +111,7 @@ export const AdobePDFViewer: React.FC<AdobePDFViewerProps> = ({
                 .then(() => {
                    console.log("Anotaciones iniciales cargadas");
                 })
-                .catch((e: any) => console.error("Error cargando anotaciones", e));
+                .catch((e: unknown) => console.error("Error cargando anotaciones", e));
             } catch (e) {
               console.error("Error parsing initial annotations", e);
             }
@@ -86,7 +120,7 @@ export const AdobePDFViewer: React.FC<AdobePDFViewerProps> = ({
 
           // Escuchar cambios
           const saveAnnotations = () => {
-             annotationManager.getAnnotations().then((result: any) => {
+             annotationManager.getAnnotations().then((result: unknown[]) => {
                 const annotationsJSON = JSON.stringify(result);
                 if (onAnnotationsChange) {
                     onAnnotationsChange(annotationsJSON);
@@ -95,7 +129,7 @@ export const AdobePDFViewer: React.FC<AdobePDFViewerProps> = ({
           };
 
           annotationManager.registerEventListener(
-            (event: any) => {
+            (event: AdobeEvent) => {
               if (
                 event.type === "ANNOTATION_ADDED" || 
                 event.type === "ANNOTATION_UPDATED" || 

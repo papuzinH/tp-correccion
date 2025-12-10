@@ -31,7 +31,6 @@ export default function RichTextEditor({
             }),
             ResizableImage.configure({
                 allowBase64: true,
-                inline: false,
                 defaultWidth: 300,
             }),
         ],
