@@ -75,7 +75,7 @@ function App() {
               transition: isResizing ? 'none' : undefined
             }}
           >
-            <div style={{ width: sidebarWidth, height: '100%' }}>
+            <div style={{ width: sidebarWidth, height: '100%', pointerEvents: isResizing ? 'none' : 'auto' }}>
               {archivoAbierto && (
                 <AdobePDFViewer 
                   url={TesisPDF}
