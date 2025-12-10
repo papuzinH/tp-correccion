@@ -6,14 +6,22 @@ import { useGradingModal } from '../../../../hooks/useGradingModal';
 import styles from './GradingControls.module.css';
 
 interface GradingControlsProps {
-  currentScore: number;
+  currentScore: number | string | null;
   onScoreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   scaleValues: (string | number)[];
   integrantes: Usuario[];
+  tipoDevolucion: string;
+  setTipoDevolucion: (tipo: string) => void;
 }
 
-export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues, integrantes }: GradingControlsProps) => {
-  const [tipoDevolucion, setTipoDevolucion] = useState<string>('Tipo de devolución');
+export const GradingControls = memo(({ 
+  currentScore, 
+  onScoreChange, 
+  scaleValues, 
+  integrantes,
+  tipoDevolucion,
+  setTipoDevolucion
+}: GradingControlsProps) => {
   const { isOpen, openModal, closeModal } = useGradingModal();
 
   return (
@@ -44,12 +52,12 @@ export const GradingControls = memo(({ currentScore, onScoreChange, scaleValues,
         ) : (
           <select 
             className={`${styles.select} ${styles.selectPrimary}`}
-            value={currentScore} 
+            value={currentScore ?? ""} 
             onChange={onScoreChange}
             disabled={tipoDevolucion !== "Calificación final" && tipoDevolucion !== "Calificación individual"}
             aria-label="Seleccionar calificación"
           >
-            <option value={0} disabled>Ingrese calif.</option>
+            <option value="" disabled>Ingrese calif.</option>
             {scaleValues.map((val) => (
               <option key={val} value={val}>{val}</option>
             ))}

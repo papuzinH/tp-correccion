@@ -9,7 +9,7 @@ import { Usuario } from '../../../../types';
 import styles from './GradingPanel.module.css';
 
 export const GradingPanel: React.FC = () => {
-  const { borrador, actualizarBorrador, entregas, indiceEntregaActual, usuarios, tpConfiguracion, escalasDeNotas } = useAppStore(
+  const { borrador, actualizarBorrador, entregas, indiceEntregaActual, usuarios, tpConfiguracion, escalasDeNotas, enviarCorreccion } = useAppStore(
     useShallow((state) => ({
       borrador: state.borrador,
       actualizarBorrador: state.actualizarBorrador,
@@ -18,12 +18,14 @@ export const GradingPanel: React.FC = () => {
       usuarios: state.usuarios,
       tpConfiguracion: state.tpConfiguracion,
       escalasDeNotas: state.escalasDeNotas,
+      enviarCorreccion: state.enviarCorreccion,
     }))
   );
 
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
   const [tempAttachedFiles, setTempAttachedFiles] = useState<File[]>([]);
+  const [tipoDevolucion, setTipoDevolucion] = useState<string>('Tipo de devolución');
 
   const entregaActual = entregas[indiceEntregaActual];
   const escalaActual = escalasDeNotas.find(escala => escala.idEscala === tpConfiguracion.idEscala);
@@ -39,10 +41,12 @@ export const GradingPanel: React.FC = () => {
   }, [actualizarBorrador]);
 
   const handleScoreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    actualizarBorrador({ puntaje: Number(e.target.value) });
+    const val = e.target.value;
+    const numVal = Number(val);
+    actualizarBorrador({ puntaje: isNaN(numVal) ? val : numVal });
   };
 
-  const currentScore = borrador?.puntaje || 0;
+  const currentScore = borrador?.puntaje ?? null;
   const currentFeedback = borrador?.feedback || 'La entrega está parcialmente bien. Deberían haber hecho bien el punto 2. Envíenme de nuevo la entrega completa con todos los puntos';
 
   const handleSaveDraft = useCallback(() => {
@@ -51,13 +55,49 @@ export const GradingPanel: React.FC = () => {
   }, []);
 
   const handleSend = useCallback(() => {
-    if (borrador?.feedback && borrador.puntaje !== undefined && borrador.puntaje > 0) {
-      actualizarBorrador({ completo: true });
-      alert('Corrección enviada');
-    } else {
-      alert('Completa el feedback y la calificación antes de enviar');
+    if (tipoDevolucion === 'Tipo de devolución') {
+      alert('Por favor, seleccione un tipo de devolución antes de enviar.');
+      return;
     }
-  }, [borrador, actualizarBorrador]);
+
+    const datosCorreccion: any = {
+      fechaCorreccion: new Date().toISOString(),
+      devolucion: borrador?.feedback || currentFeedback,
+      adjuntosCorreccion: attachedFiles.map(f => f.name),
+      anotacionesPDF: null,
+      esReentrega: tipoDevolucion === 'Solicitud de reentrega',
+      nota: null,
+      notasIndividuales: null
+    };
+
+    if (tipoDevolucion === 'Calificación final') {
+      if (borrador?.puntaje === null || borrador?.puntaje === undefined) {
+        alert('Debe ingresar una calificación final.');
+        return;
+      }
+      datosCorreccion.nota = borrador.puntaje;
+    } else if (tipoDevolucion === 'Calificación individual') {
+      const notas = borrador?.notasIndividuales || {};
+      const todosTienenNota = integrantes.every(integrante => 
+        notas[integrante.idUsuario] !== undefined && notas[integrante.idUsuario] !== null
+      );
+
+      if (!todosTienenNota) {
+        alert('Debe asignar una calificación a todos los integrantes.');
+        return;
+      }
+
+      if (borrador?.notasIndividuales) {
+        datosCorreccion.notasIndividuales = Object.entries(borrador.notasIndividuales).map(([id, nota]) => ({
+          idUsuario: Number(id),
+          nota
+        }));
+      }
+    }
+
+    enviarCorreccion(datosCorreccion);
+    alert('Corrección enviada exitosamente');
+  }, [borrador, attachedFiles, tipoDevolucion, enviarCorreccion, currentFeedback]);
 
   const handleFileClick = useCallback(() => {
     setTempAttachedFiles(attachedFiles);
@@ -89,6 +129,8 @@ export const GradingPanel: React.FC = () => {
         onScoreChange={handleScoreChange}
         scaleValues={scaleValues}
         integrantes={integrantes}
+        tipoDevolucion={tipoDevolucion}
+        setTipoDevolucion={setTipoDevolucion}
       />
 
       <GradingEditor

@@ -24,11 +24,12 @@ export const IndividualGradingModal: React.FC<IndividualGradingModalProps> = ({
     actualizarBorrador: state.actualizarBorrador,
   })));
 
-  const [notas, setNotas] = useState<Record<number, number>>(borrador?.notasIndividuales || {});
+  const [notas, setNotas] = useState<Record<number, number | string>>(borrador?.notasIndividuales || {});
 
   const handleNotaChange = (idUsuario: number, value: string) => {
     const numValue = Number(value);
-    setNotas(prev => ({ ...prev, [idUsuario]: numValue }));
+    const finalValue = isNaN(numValue) ? value : numValue;
+    setNotas(prev => ({ ...prev, [idUsuario]: finalValue }));
   };
 
   return (

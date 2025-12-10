@@ -30,7 +30,8 @@ export interface VersionEntrega {
   devolucion?: string | null;
   adjuntosCorreccion?: string[] | null;
   anotacionesPDF?: string | null;
-  nota?: number | null;
+  nota?: number | string | null;
+  notasIndividuales?: { idUsuario: number; nota: number | string }[] | null;
   esReentrega?: boolean | null;
 }
 
@@ -42,9 +43,9 @@ export interface Entrega {
 
 export interface BorradorCorreccion {
   idEntregaTP: number;
-  puntaje: number;
+  puntaje: number | string | null;
   feedback: string;
   criterios: Record<string, number>;
   completo: boolean;
-  notasIndividuales?: Record<number, number>;
+  notasIndividuales?: Record<number, number | string>;
 }

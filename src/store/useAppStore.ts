@@ -20,6 +20,7 @@ interface AppState {
   resetearBorrador: () => void;
   setArchivoAbierto: (archivo: string | null) => void;
   actualizarIntegrantes: (integrantes: Usuario[]) => void;
+  enviarCorreccion: (datos: Partial<VersionEntrega>) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -51,7 +52,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   actualizarBorrador: (nuevoBorrador) => set((state) => {
     const borradorActual = state.borrador || {
       idEntregaTP: 0,
-      puntaje: 0,
+      puntaje: null,
       feedback: '',
       criterios: {},
       completo: false
@@ -72,5 +73,28 @@ export const useAppStore = create<AppState>((set, get) => ({
       integrantes: integrantes.map(u => u.idUsuario)
     };
     return { entregas: nuevasEntregas };
+  }),
+
+  enviarCorreccion: (datos) => set((state) => {
+    const nuevasEntregas = [...state.entregas];
+    const entregaIndex = state.indiceEntregaActual;
+    const entrega = nuevasEntregas[entregaIndex];
+    
+    if (entrega && entrega.versiones.length > 0) {
+      const nuevasVersiones = [...entrega.versiones];
+      const ultimaVersionIndex = nuevasVersiones.length - 1;
+      
+      nuevasVersiones[ultimaVersionIndex] = {
+        ...nuevasVersiones[ultimaVersionIndex],
+        ...datos
+      };
+
+      nuevasEntregas[entregaIndex] = {
+        ...entrega,
+        versiones: nuevasVersiones
+      };
+    }
+    
+    return { entregas: nuevasEntregas, borrador: null };
   }),
 }));
