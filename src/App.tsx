@@ -1,7 +1,7 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from './store/useAppStore'
-import { Layout } from './components/layout/Layout'
+import { Layout } from './features/layout/Layout'
 import { usuarios as MOCK_USUARIOS, entregas as MOCK_ENTREGAS } from './data/mockData'
 
 // Lazy loading del workspace completo

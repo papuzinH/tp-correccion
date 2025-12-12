@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
-import { Button } from '../ui/Button';
+import { Button } from '../../shared/ui/Button';
 import { mockState, escalasDeNotas } from '../../data/mockData';
 import { Usuario } from '../../types';
 import { TPInfoModal } from './header/TPInfoModal';

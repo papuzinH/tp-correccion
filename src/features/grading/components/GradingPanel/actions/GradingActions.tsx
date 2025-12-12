@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { FileText } from 'lucide-react';
-import { Button } from '../../../../../components/ui/Button';
+import { Button } from '../../../../../shared/ui/Button';
 import styles from './GradingActions.module.css';
 
 interface GradingActionsProps {

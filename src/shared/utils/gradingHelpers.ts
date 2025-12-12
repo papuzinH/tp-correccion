@@ -1,4 +1,4 @@
-import { VersionEntrega } from '../types';
+import { VersionEntrega } from '../../types';
 
 export const hasCorrection = (version: VersionEntrega) => {
   return (

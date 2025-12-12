@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Calendar } from 'lucide-react';
 import { VersionEntrega } from '../../../../../types';
 import { AttachmentList } from '../attachments/AttachmentList';
-import { formatDate } from '../../../../../utils/formatters';
+import { formatDate } from '../../../../../shared/utils/formatters';
 import styles from './SubmissionMessage.module.css';
 
 interface SubmissionMessageProps {

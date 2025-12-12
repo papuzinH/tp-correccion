@@ -1,6 +1,6 @@
 import { Calendar, FileText, ExternalLink, Pencil } from 'lucide-react';
-import { Modal } from '../../ui/Modal';
-import { formatDate } from '../../../utils/formatters';
+import { Modal } from '../../../shared/ui/Modal';
+import { formatDate } from '../../../shared/utils/formatters';
 import { TPConfiguracion, VersionEntrega } from '../../../types';
 import styles from './TPInfoModal.module.css';
 

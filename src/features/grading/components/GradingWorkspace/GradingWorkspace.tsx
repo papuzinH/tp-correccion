@@ -1,7 +1,7 @@
 import { useCallback, Suspense } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../../../store/useAppStore';
-import { AdobePDFViewer } from '../../../../components/ui/AdobePDFViewer';
+import { AdobePDFViewer } from '../../../../shared/ui/AdobePDFViewer';
 import { StudentSubmission } from '../StudentSubmission/StudentSubmission';
 import { GradingPanel } from '../GradingPanel/GradingPanel';
 import { useResizableSidebar } from '../../hooks/useResizableSidebar';

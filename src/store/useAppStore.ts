@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
 import { BorradorCorreccion, Usuario, Entrega, TPConfiguracion, VersionEntrega } from '../types';
 import { tpConfiguracion, escalasDeNotas } from '../data/mockData';
 
@@ -23,7 +24,15 @@ interface AppState {
   enviarCorreccion: (datos: Partial<VersionEntrega>) => void;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+const INITIAL_DRAFT: BorradorCorreccion = {
+  idEntregaTP: 0,
+  puntaje: null,
+  feedback: '',
+  criterios: {},
+  completo: false
+};
+
+export const useAppStore = create<AppState>()(immer((set, get) => ({
   usuarios: [],
   entregas: [],
   indiceEntregaActual: 0,
@@ -50,51 +59,28 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   actualizarBorrador: (nuevoBorrador) => set((state) => {
-    const borradorActual = state.borrador || {
-      idEntregaTP: 0,
-      puntaje: null,
-      feedback: '',
-      criterios: {},
-      completo: false
-    };
-    
-    return {
-      borrador: { ...borradorActual, ...nuevoBorrador }
-    };
+    if (!state.borrador) {
+      state.borrador = { ...INITIAL_DRAFT };
+    }
+    Object.assign(state.borrador, nuevoBorrador);
   }),
 
   resetearBorrador: () => set({ borrador: null }),
   setArchivoAbierto: (archivo) => set({ archivoAbierto: archivo }),
 
   actualizarIntegrantes: (integrantes) => set((state) => {
-    const nuevasEntregas = [...state.entregas];
-    nuevasEntregas[state.indiceEntregaActual] = {
-      ...nuevasEntregas[state.indiceEntregaActual],
-      integrantes: integrantes.map(u => u.idUsuario)
-    };
-    return { entregas: nuevasEntregas };
+    const entrega = state.entregas[state.indiceEntregaActual];
+    if (entrega) {
+      entrega.integrantes = integrantes.map(u => u.idUsuario);
+    }
   }),
 
   enviarCorreccion: (datos) => set((state) => {
-    const nuevasEntregas = [...state.entregas];
-    const entregaIndex = state.indiceEntregaActual;
-    const entrega = nuevasEntregas[entregaIndex];
-    
+    const entrega = state.entregas[state.indiceEntregaActual];
     if (entrega && entrega.versiones.length > 0) {
-      const nuevasVersiones = [...entrega.versiones];
-      const ultimaVersionIndex = nuevasVersiones.length - 1;
-      
-      nuevasVersiones[ultimaVersionIndex] = {
-        ...nuevasVersiones[ultimaVersionIndex],
-        ...datos
-      };
-
-      nuevasEntregas[entregaIndex] = {
-        ...entrega,
-        versiones: nuevasVersiones
-      };
+      const ultimaVersion = entrega.versiones[entrega.versiones.length - 1];
+      Object.assign(ultimaVersion, datos);
     }
-    
-    return { entregas: nuevasEntregas, borrador: null };
+    state.borrador = null;
   }),
-}));
+})));

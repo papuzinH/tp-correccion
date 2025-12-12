@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Button.module.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
 }
 
-export const Button: React.FC<ButtonProps> = ({ icon, children, className, variant = 'primary', ...props }) => {
+export const Button = memo(({ icon, children, className, variant = 'primary', ...props }: ButtonProps) => {
   const variantClass = variant === 'secondary' ? styles.secondary : '';
 
   return (
@@ -19,4 +19,6 @@ export const Button: React.FC<ButtonProps> = ({ icon, children, className, varia
       {children}
     </button>
   );
-};
+});
+
+Button.displayName = 'Button';

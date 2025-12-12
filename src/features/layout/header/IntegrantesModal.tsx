@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Modal } from '../../ui/Modal';
-import { Button } from '../../ui/Button';
+import { Modal } from '../../../shared/ui/Modal';
+import { Button } from '../../../shared/ui/Button';
 import { Usuario } from '../../../types';
 import { usuarios } from '../../../data/mockData';
 import styles from './IntegrantesModal.module.css';

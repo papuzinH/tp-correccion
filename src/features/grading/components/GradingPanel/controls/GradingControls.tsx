@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Button } from '../../../../../components/ui/Button';
+import { Button } from '../../../../../shared/ui/Button';
 import { IndividualGradingModal } from '../modals/IndividualGradingModal';
 import { Usuario } from '../../../../../types';
 import { useGradingModal } from '../../../../../hooks/useGradingModal';

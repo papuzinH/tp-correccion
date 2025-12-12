@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import { Modal } from '../../../../../components/ui/Modal';
-import { Button } from '../../../../../components/ui/Button';
+import { Modal } from '../../../../../shared/ui/Modal';
+import { Button } from '../../../../../shared/ui/Button';
 import { Usuario } from '../../../../../types';
 import { useAppStore } from '../../../../../store/useAppStore';
 import styles from './IndividualGradingModal.module.css';

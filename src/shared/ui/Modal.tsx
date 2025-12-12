@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { X } from 'lucide-react';
 import styles from './Modal.module.css';
 
@@ -8,7 +8,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export const Modal = memo(({ isOpen, onClose, children }: ModalProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -29,12 +29,14 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className={styles.closeButton} aria-label="Cerrar">
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose}>
           <X size={20} />
         </button>
         {children}
       </div>
     </div>
   );
-};
+});
+
+Modal.displayName = 'Modal';
