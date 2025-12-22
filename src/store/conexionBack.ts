@@ -1,40 +1,26 @@
 import axios from 'axios';
-import { VersionEntrega, BorradorCorreccion, Usuario } from '../types';
-
 // Definición de tipos para los callbacks
 type Callback<T = any> = (response: { data: T; success?: boolean; message?: string }) => void;
 
 const enviarRequest = (
   endpoint: string,
   data: any,
-  callback: Callback
+  callback: (res: any) => void
 ) => {
-  const formData = new FormData();
-  // Si data es un objeto simple, lo stringificamos como en el ejemplo
-  // Si contiene archivos (FormData), lo manejamos diferente, pero siguiendo tu patrón:
-  if (data instanceof FormData) {
-    // Si ya es FormData, iteramos y agregamos (caso subida de archivos)
-    // Nota: Tu ejemplo stringify todo en 'data', pero para archivos necesitamos append directo
-    // Asumiremos el patrón del ejemplo: data va en un campo 'data' stringificado, 
-    // salvo que sean archivos adjuntos reales.
-    // Para mantener compatibilidad estricta con tu ejemplo:
-    formData.append('data', JSON.stringify(data)); 
-  } else {
-    formData.append('data', JSON.stringify(data));
-  }
-
+  var formData = new FormData();
+  formData.append('data', data);
   axios({
     method: 'post',
-    url: import.meta.env.VITE_REACT_APP_URL_SRV + 'tp-correccion/ajax/' + endpoint,
+    url: import.meta.env.VITE_REACT_APP_URL_SRV + 'nuevotp/correccion/ajax/' + endpoint,
     data: formData,
     headers: { 'Content-Type': 'multipart/form-data' },
-  })
-  .then((res) => callback(res.data))
-  .catch((err) => {
-    console.error(`Error en ${endpoint}:`, err);
-    callback({ data: null, success: false, message: 'Error de conexión' });
-  });
+  }).then((response) => callback(response.data))
+    .catch((error) => {
+      console.error(`Error en request ${endpoint}:`, error);
+      callback({ success: false, message: error.message });
+    });
 };
+
 
 /**
  * Obtiene el contexto completo para la corrección:
@@ -43,9 +29,9 @@ const enviarRequest = (
  * - Datos de la Actividad (Fechas, Grupal/Individual)
  * - Lista de Alumnos de la comisión
  */
-export const getTPContext = (idActividad: number, idComision: number) => {
+export const getTPContext = (data: { idActividad: number; idComision: number }) => {
   return new Promise((resolve, reject) => {
-    enviarRequest('GetTPContext', { idActividad, idComision }, (res) => {
+    enviarRequest('GetTPContext', JSON.stringify(data), (res) => {
       if (res.data) {
         resolve(res.data);
       } else {
@@ -58,10 +44,13 @@ export const getTPContext = (idActividad: number, idComision: number) => {
 /**
  * Obtiene todas las entregas con sus versiones y correcciones.
  */
-export const getEntregas = (idActividad: number, idComision: number) => {
+export const getEntregas = (data: { idActividad: number; idComision: number }) => {
   return new Promise((resolve, reject) => {
-    enviarRequest('ListEntregas', { idActividad, idComision }, (res) => {
-      if (res.data) {
+    enviarRequest('ListEntregas', JSON.stringify(data), (res) => {
+      // El backend puede devolver el array directamente o envuelto en un objeto { data: [...] }
+      if (Array.isArray(res)) {
+        resolve(res);
+      } else if (res && res.data) {
         resolve(res.data);
       } else {
         reject(res.message || 'No se encontraron entregas');
@@ -83,9 +72,10 @@ export const saveCorreccion = (data: {
   esReentrega: boolean;
   anotacionesPDF?: string; // JSON string
   criterios?: Record<string, number>; // JSON string
+  notasIndividuales?: { idUsuario: number; nota: number | string }[];
 }) => {
   return new Promise((resolve, reject) => {
-    enviarRequest('SaveCorreccion', data, (res) => {
+    enviarRequest('SaveCorreccion', JSON.stringify(data), (res) => {
       if (res.success) {
         resolve(res.data);
       } else {

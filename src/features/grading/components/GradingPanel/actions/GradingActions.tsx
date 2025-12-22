@@ -8,9 +8,10 @@ interface GradingActionsProps {
   onSend: () => void;
   onFileClick: () => void;
   attachedFilesCount?: number;
+  isLoading?: boolean;
 }
 
-export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick, attachedFilesCount = 0 }: GradingActionsProps) => {
+export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick, attachedFilesCount = 0, isLoading = false }: GradingActionsProps) => {
   return (
     <div className={styles.bottomBar}>
       <Button 
@@ -18,6 +19,7 @@ export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick, attached
         icon={<FileText size={18} color={attachedFilesCount > 0 ? "#ffffff" : "#1f2937"} />}
         onClick={onFileClick}
         className={styles.fileButton}
+        disabled={isLoading}
       >
         {attachedFilesCount > 0 && (
           <span className={styles.badge}>{attachedFilesCount}</span>
@@ -25,11 +27,11 @@ export const GradingActions = memo(({ onSaveDraft, onSend, onFileClick, attached
       </Button>
 
       <div className={styles.actionButtons}>
-        <Button variant="secondary" onClick={onSaveDraft}>
+        <Button variant="secondary" onClick={onSaveDraft} disabled={isLoading}>
           Guardar borrador
         </Button>
-        <Button onClick={onSend}>
-          Enviar
+        <Button variant="primary" onClick={onSend} disabled={isLoading}>
+          {isLoading ? 'Enviando...' : 'Enviar corrección'}
         </Button>
       </div>
     </div>

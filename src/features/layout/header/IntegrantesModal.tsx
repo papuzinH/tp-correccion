@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal } from '../../../shared/ui/Modal';
 import { Button } from '../../../shared/ui/Button';
 import { Usuario } from '../../../types';
-import { usuarios } from '../../../data/mockData';
+import { useAppStore } from '../../../store/useAppStore';
 import styles from './IntegrantesModal.module.css';
 
 interface IntegrantesModalProps {
@@ -13,6 +13,7 @@ interface IntegrantesModalProps {
 }
 
 export const IntegrantesModal = ({ isOpen, onClose, integrantes, onSave }: IntegrantesModalProps) => {
+  const allUsuarios = useAppStore(state => state.usuarios);
   const [tempIntegrantes, setTempIntegrantes] = useState<Usuario[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,7 +35,7 @@ export const IntegrantesModal = ({ isOpen, onClose, integrantes, onSave }: Integ
     setSearchTerm('');
   };
 
-  const filteredUsers = usuarios.filter(u =>
+  const filteredUsers = allUsuarios.filter(u =>
     !tempIntegrantes.some(t => t.idUsuario === u.idUsuario) &&
     `${u.nombre} ${u.apellido}`.toLowerCase().includes(searchTerm.toLowerCase())
   );

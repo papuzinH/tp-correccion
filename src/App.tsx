@@ -2,23 +2,24 @@ import { useEffect, lazy, Suspense } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from './store/useAppStore'
 import { Layout } from './features/layout/Layout'
-import { usuarios as MOCK_USUARIOS, entregas as MOCK_ENTREGAS } from './data/mockData'
 
 // Lazy loading del workspace completo
 const GradingWorkspace = lazy(() => import('./features/grading').then(m => ({ default: m.GradingWorkspace })));
 
 function App() {
-  const { setUsuarios, setEntregas } = useAppStore(
+  const { inicializar } = useAppStore(
     useShallow((state) => ({
-      setUsuarios: state.setUsuarios,
-      setEntregas: state.setEntregas,
+      inicializar: state.inicializar,
     }))
   );
 
   useEffect(() => {
-    setUsuarios(MOCK_USUARIOS);
-    setEntregas(MOCK_ENTREGAS);
-  }, [setUsuarios, setEntregas]);
+    // Configuración para testeo: idActividad = 1, idComision = 1
+    const idActividad = 1; 
+    const idComision = 1;
+    inicializar(idActividad, idComision);
+  }, [inicializar]);
+
 
   return (
     <Layout>

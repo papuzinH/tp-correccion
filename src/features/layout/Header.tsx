@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { useAppStore } from '../../store/useAppStore';
 import { Button } from '../../shared/ui/Button';
-import { mockState, escalasDeNotas } from '../../data/mockData';
 import { Usuario } from '../../types';
 import { TPInfoModal } from './header/TPInfoModal';
 import { IntegrantesModal } from './header/IntegrantesModal';
@@ -19,6 +18,8 @@ export const Header: React.FC = () => {
     siguienteEntrega, 
     entregaAnterior,
     actualizarIntegrantes,
+    tpConfiguracion,
+    escalasDeNotas
   } = useAppStore(
     useShallow((state) => ({
       indiceEntregaActual: state.indiceEntregaActual,
@@ -27,13 +28,26 @@ export const Header: React.FC = () => {
       siguienteEntrega: state.siguienteEntrega,
       entregaAnterior: state.entregaAnterior,
       actualizarIntegrantes: state.actualizarIntegrantes,
+      tpConfiguracion: state.tpConfiguracion,
+      escalasDeNotas: state.escalasDeNotas,
     }))
   );
 
+  const entregaActual = entregas[indiceEntregaActual];
+
+  const primeraEntrega = React.useMemo(() => {
+    if (!entregaActual?.versiones.length) return null;
+    return [...entregaActual.versiones].sort((a, b) => 
+      new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+    )[0];
+  }, [entregaActual]);
+
+  if (!tpConfiguracion) {
+    return <header className={styles.header}><div className={styles.headerContent}>Cargando...</div></header>;
+  }
+
   const hasPrev = indiceEntregaActual > 0;
   const hasNext = indiceEntregaActual < entregas.length - 1;
-
-  const entregaActual = entregas[indiceEntregaActual];
 
   // Get group members objects
   const integrantesObjects = entregaActual?.integrantes
@@ -45,14 +59,7 @@ export const Header: React.FC = () => {
     .map(u => `${u.nombre} ${u.apellido}`)
     .join(', ');
 
-  const escala = escalasDeNotas.find(e => e.idEscala === mockState.tpConfiguracion.idEscala);
-  
-  const primeraEntrega = React.useMemo(() => {
-    if (!entregaActual?.versiones.length) return null;
-    return [...entregaActual.versiones].sort((a, b) => 
-      new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
-    )[0];
-  }, [entregaActual]);
+  const escala = escalasDeNotas.find(e => e.idEscala === tpConfiguracion.idEscala);
 
   return (
     <header className={styles.header}>
@@ -66,7 +73,7 @@ export const Header: React.FC = () => {
 
       <div className={styles.headerContent}>
         <div className={styles.titleContainer}>
-          <h1 className={styles.title}>{mockState.tpConfiguracion.alias}</h1>
+          <h1 className={styles.title}>{tpConfiguracion.alias}</h1>
           <button 
             className={styles.infoButton} 
             onClick={() => setIsInfoModalOpen(true)}
@@ -77,7 +84,7 @@ export const Header: React.FC = () => {
         </div>
         <p className={styles.subtitle}>
           <span className={styles.subtitleLabel}>
-            Entrega {mockState.tpConfiguracion.esGrupal ? 'grupal' : 'individual'}:
+            Entrega {tpConfiguracion.esGrupal ? 'grupal' : 'individual'}:
           </span> {groupMembers || 'Sin alumnos'}
         </p>
       </div>
@@ -93,7 +100,7 @@ export const Header: React.FC = () => {
       <TPInfoModal 
         isOpen={isInfoModalOpen}
         onClose={() => setIsInfoModalOpen(false)}
-        tpConfig={mockState.tpConfiguracion}
+        tpConfig={tpConfiguracion}
         escalaNombre={escala?.nombre || 'No definida'}
         groupMembers={groupMembers}
         primeraEntrega={primeraEntrega}

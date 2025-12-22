@@ -50,3 +50,9 @@ export interface BorradorCorreccion {
   notasIndividuales?: Record<number, number | string>;
   anotacionesPDF?: string | null;
 }
+
+export interface Escala {
+  idEscala: number;
+  nombre: string;
+  valores: (number | string)[];
+}

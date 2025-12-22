@@ -32,7 +32,8 @@ export const GradingPanel: React.FC = () => {
     handleFeedbackChange,
     handleScoreChange,
     handleSaveDraft,
-    submitCorrection
+    submitCorrection,
+    isSubmitting
   } = useGradingForm(attachedFiles);
 
   if (!esperandoCorreccion) {
@@ -60,6 +61,7 @@ export const GradingPanel: React.FC = () => {
         onSend={submitCorrection}
         onFileClick={handleFileClick}
         attachedFilesCount={attachedFiles.length}
+        isLoading={isSubmitting}
       />
 
       <AttachmentModal
